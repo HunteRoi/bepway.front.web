@@ -9,6 +9,9 @@ import { User } from './model/User';
 })
 export class AppComponent implements OnInit {
   readonly KEY = 'currentUser';
+  readonly VALID_USERS: User[];
+  readonly PASSWORD = '123';
+
   currentUser: User;
   title = 'back-office';
   loginForm = this.fb.group({
@@ -16,21 +19,30 @@ export class AppComponent implements OnInit {
     password: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.VALID_USERS = [
+      new User('hunteroi', 'hunteroi@bep.be'),
+      new User('imnoot', 'imnoot@bep.be')
+    ];
+  }
 
   ngOnInit(): void {}
 
   onLoginSubmit() {
-    /*if (this.loginForm.valid) {
-      const newUser = newUser(); //API call to DB to get user based on provided login and password
-
+    if (this.loginForm.valid) {
+      const formUser = this.loginForm.value;
+      const newUser = this.VALID_USERS.find(u => u.login === formUser.login && formUser.password === this.PASSWORD) || null;
       this.currentUser = this.deserialize(this.KEY);
-      if (this.currentUser === null || this.currentUser !== newUser) {
+      if (newUser !== null && this.currentUser !== newUser) {
         this.currentUser = newUser;
+        console.log(this.currentUser);
+        this.serialize(this.KEY, this.currentUser);
+        this.loginForm.reset();
+      } else {
+        console.log('sheh');
       }
-      this.serialize(this.KEY, newUser);
-      this.loginForm.reset();
-    }*/
+      document.getElementById('loginSubmitButton').focus();
+    }
   }
 
   private deserialize(key: string): User {

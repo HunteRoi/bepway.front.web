@@ -22,13 +22,13 @@
         </div>
 
         <div class="wrap-input100 validate-input" data-validate="Password is required">
-          <input formControlName="password" class="input100" type="password" name="password" placeholder="Password" data-kwimpalastatus="alive" data-kwimpalaid="1543223420442-2">
+          <input formControlName="password" class="input100" type="password" name="password" placeholder="Password" autocomplete="false" data-kwimpalastatus="alive" data-kwimpalaid="1543223420442-2">
           <span class="focus-input100"></span>
           <span class="symbol-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
         </div>
 
         <div class="container-login100-form-btn">
-          <button [disabled]="!loginForm.valid" type="submit" class="login100-form-btn" (click)="onLoginSubmit()">Login</button>
+          <button id="loginSubmitButton" [disabled]="!loginForm.valid" type="submit" class="login100-form-btn" (click)="onLoginSubmit()">Login</button>
         </div>
 
         <div class="text-center">
