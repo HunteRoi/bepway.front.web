@@ -10,14 +10,19 @@ import { RoadManagementComponent } from './road-management/road-management.compo
 import { CompanyManagementComponent } from './company-management/company-management.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'user-management', component: UserManagementComponent },
-  { path: 'road-management', component: RoadManagementComponent },
-  { path: 'company-management', component: CompanyManagementComponent },
+  { path: 'dashboard', component: DashboardComponent, 
+    children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'user-management', component: UserManagementComponent },
+      { path: 'road-management', component: RoadManagementComponent },
+      { path: 'company-management', component: CompanyManagementComponent }
+    ]
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -29,7 +34,8 @@ const appRoutes: Routes = [
     RoadManagementComponent,
     CompanyManagementComponent,
     PageNotFoundComponent,
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
