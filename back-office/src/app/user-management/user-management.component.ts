@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TabsService } from '../tabs.service';
 
 @Component({
   selector: 'app-user-management',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor() { }
+  tabsService : TabsService;
+
+  constructor() {
+    this.tabsService = new TabsService("userTab");
+   }
 
   ngOnInit() {
+    this.tabsService.setActive();
   }
 
 }

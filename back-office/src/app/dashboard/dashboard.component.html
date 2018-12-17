@@ -1,11 +1,11 @@
-<div class="tab">
-	<button class="tablinks" active>Home</button>
-	<button class="tablinks">User management</button>
-	<button class="tablinks">Road management</button>
-  <button class="tablinks">Company management</button>
+<div class="tab" id="tabs">
+	<button class="tablinks" id="homeTab" (click)="swapTab('homeTab')">Home</button>
+	<button class="tablinks" id="userTab" (click)="swapTab('userTab')">User management</button>
+	<button class="tablinks" id="roadTab" (click)="swapTab('roadTab')">Road management</button>
+  <button class="tablinks" id="companyTab" (click)="swapTab('companyTab')">Company management</button>
 </div>
 <div class="tabcontent">
-  
+  <router-outlet></router-outlet>
 </div>
 <div>
 	<span id="actualInfo">

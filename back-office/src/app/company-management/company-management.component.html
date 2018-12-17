@@ -1,3 +1,31 @@
-<p>
-  company-management works!
-</p>
+<div id="listButtons">
+  <span>
+    <button>List companies</button>
+  </span>
+  <span>
+    <button>Add company</button>
+  </span>
+  <span>
+    <button *ngIf="(updateDisabled)" >Update company</button>
+  </span>
+</div>
+<div id="selectZoning">
+  Zoning : 
+  <select>
+    
+  </select>
+</div>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Activity sector</th>
+  </tr>
+</table>
+<div id="elementInput"> 
+  Number of elements per page : <input type="text" [value]="numberOfElement" (input)= "updateValue($event)"> <button (click)="displayCompanies()">Display !</button>
+</div>
+<div class="pagination">
+  <a>&laquo;</a>
+  <a>&raquo;</a>
+</div>

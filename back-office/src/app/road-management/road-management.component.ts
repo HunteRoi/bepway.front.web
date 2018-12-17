@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TabsService } from '../tabs.service';
 
 @Component({
   selector: 'app-road-management',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoadManagementComponent implements OnInit {
 
-  constructor() { }
+  tabsService : TabsService;
+
+  constructor() { 
+    this.tabsService = new TabsService("roadTab");
+  }
 
   ngOnInit() {
+    this.tabsService.setActive();
   }
 
 }

@@ -13,14 +13,20 @@ import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full'},
+ // { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, 
+  /*
+  { path: 'user-management', redirectTo: 'dashboard/user-management', pathMatch: 'full'},
+  { path: 'road-management', redirectTo: '/dashboard/road-management', pathMatch: 'full'},
+  { path: 'company-management', redirectTo: '/dashboard/company-management', pathMatch: 'full'},
+  */
+  { path: '', component: DashboardComponent, 
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'road-management', component: RoadManagementComponent },
-      { path: 'company-management', component: CompanyManagementComponent }
+      { path: 'company-management', component: CompanyManagementComponent },
+      { path: '', redirectTo: '/login', pathMatch: 'full'},
     ]
   },
   { path: '**', component: PageNotFoundComponent }
