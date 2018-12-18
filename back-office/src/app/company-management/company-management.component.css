@@ -5,13 +5,18 @@
     justify-content: center;
 }
 
-
 #selectZoning{
     margin : 20px;
 }
-
 
 .full-width-table {
     width: 100%;
 }
 
+.highlight{
+    background-color: #ccc;
+  }
+
+.active{
+    background-color: #ccc;
+}

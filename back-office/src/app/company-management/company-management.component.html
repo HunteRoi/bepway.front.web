@@ -1,14 +1,16 @@
 <div id="listButtons">
   <span>
-    <button>List companies</button>
+    <button id='listCompanies' (click)="swapButton('listCompanies')">List companies</button>
   </span>
   <span>
-    <button>Add company</button>
+    <button id='addCompany' (click)="swapButton('addCompany')">Add company</button>
   </span>
   <span>
-    <button *ngIf="(updateDisabled)" >Update company</button>
+    <button id='updateCompany' *ngIf="(updateDisabled)" (click)="swapButton('updateCompany')" >Update company</button>
   </span>
 </div>
+
+<router-outlet></router-outlet>
 
 <div id="selectZoning">
   Zoning : 
@@ -17,7 +19,7 @@
   </select>
 </div>
 
-<div class="mat-elevation-z8">
+<div [class.mat-elevation-z8]="isActive">
   <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
     
     <ng-container matColumnDef="name">
@@ -37,13 +39,14 @@
       </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr (click)="testFunction(row)" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    <tr (click)="selectCompany(row)" [ngClass]="{'highlight' : selectedRowName == row.name}" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
   </table>
     
-  <mat-paginator #paginator
+  <mat-paginator #paginator id="paging"
       [length]="dataSource.data.length"
       [pageIndex]="0"
       [pageSize]="10"
       [pageSizeOptions]="[5, 10, 20]">
   </mat-paginator>
+  
 </div>
