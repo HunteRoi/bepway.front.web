@@ -5,54 +5,13 @@
     justify-content: center;
 }
 
-table{
-    margin-left : auto;
-    margin-right : auto;
-    width : 100%;
-    border : 1px solid black;
-}
-
-th,td{
-    padding: 5px 15px;
-    border : 1px solid black;
-    border-collapse: collapse;
-}
 
 #selectZoning{
     margin : 20px;
 }
 
 
-input{
-    width : 50px;
-}
-
-#elementInput{
-    margin : 15px;
-}
-
-.pagination {
-    margin : 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-.pagination a {
-    color: black;
-    float: left;
-    padding: 8px 16px;
-    text-decoration: none;
-}
-  
-.pagination a.active {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
-button{
-    margin-left: 10px;
+.full-width-table {
+    width: 100%;
 }
 

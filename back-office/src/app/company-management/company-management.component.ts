@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TabsService } from '../tabs.service';
+import { Company } from '../model/Company';
+import { MatPaginator, MatSort } from '@angular/material';
+import { DataTableDataSource } from './data-table-datasource';
 
 @Component({
   selector: 'app-company-management',
@@ -8,26 +11,31 @@ import { TabsService } from '../tabs.service';
 })
 export class CompanyManagementComponent implements OnInit {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource: DataTableDataSource;
+
   tabsService : TabsService;
-  numberOfElement : any = "";
   updateDisabled : boolean = false;
+  companiesArray : Array<Company>;
+  columnsToDisplay = ['name', 'address', 'sector'];
 
   constructor() {
     this.tabsService = new TabsService("companyTab");
+    this.companiesArray = new Array();
+
+    this.companiesArray.push(new Company("Name","Address","Sector"));
+    this.companiesArray.push(new Company("secondeName","secondAddress","secondSector"));
    }
 
   ngOnInit() {
     this.tabsService.setActive();
+    this.dataSource = new DataTableDataSource(this.paginator, this.sort);
+    this.dataSource.addCompanies(this.companiesArray);
   }
 
-  updateValue(event) {
-    this.numberOfElement = event.target.value;
-    }
-
-  displayCompanies(){
-    if(parseInt(this.numberOfElement) != NaN){
-        // Call the API etc...
-    }
+  testFunction(row){
+    console.log(row);
   }
 
   companySelected(){
