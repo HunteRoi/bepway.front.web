@@ -15,6 +15,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatPaginatorModule, MatSortModule } from '@angular/material';
+import { CompanyManagementAddListCompaniesComponent } from './company-management-add-list-companies/company-management-add-list-companies.component';
+import { CompanyManagementUpdateComponent } from './company-management-update/company-management-update.component';
 
 const appRoutes: Routes = [
  // { path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -29,7 +31,13 @@ const appRoutes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'road-management', component: RoadManagementComponent },
-      { path: 'company-management', component: CompanyManagementComponent },
+      { path: 'company-management', component: CompanyManagementComponent,
+        children:[
+          { path: 'list-companies', component: CompanyManagementAddListCompaniesComponent},
+          { path: 'update-company', component: CompanyManagementUpdateComponent},
+          { path: '', redirectTo:'list-companies', pathMatch: 'full'}
+        ] 
+      },
       { path: '', redirectTo: '/login', pathMatch: 'full'},
     ]
   },
@@ -45,7 +53,9 @@ const appRoutes: Routes = [
     CompanyManagementComponent,
     PageNotFoundComponent,
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    CompanyManagementAddListCompaniesComponent,
+    CompanyManagementUpdateComponent
   ],
   imports: [
     BrowserModule,

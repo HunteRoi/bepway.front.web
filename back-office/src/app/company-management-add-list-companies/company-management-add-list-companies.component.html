@@ -1,16 +1,4 @@
-<div id="listButtons">
-  <span>
-    <button id='listCompanies' (click)="swapButton('listCompanies')">List companies</button>
-  </span>
-  <span>
-    <!--*ngIf="(updateDisabled)"-->
-    <button id='updateCompany'(click)="swapButton('updateCompany')" >Update company</button>
-  </span>
-</div>
-
-<router-outlet ></router-outlet>
-
-<!--<div id="selectZoning">
+<div id="selectZoning">
   Zoning : 
   <select>
     
@@ -37,7 +25,7 @@
       </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr (click)="selectCompany(row)" [ngClass]="{'highlight' : selectedRowName == row.name}" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    <tr (click)="selectCompany(row)" (updateDisabledChange)="selectCompany(row)" [ngClass]="{'highlight' : selectedRowName == row.name}" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
   </table>
     
   <mat-paginator #paginator id="paging"
@@ -48,4 +36,3 @@
   </mat-paginator>
   
 </div>
--->

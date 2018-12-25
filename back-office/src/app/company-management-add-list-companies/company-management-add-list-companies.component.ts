@@ -1,39 +1,33 @@
-import { Component, OnInit, ViewChild, Output, Input } from '@angular/core';
-import { TabsService } from '../tabs.service';
+import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from './data-table-datasource';
-import { Router } from '@angular/router';
-import { OutputType } from '@angular/core/src/view';
+import { EventEmitter } from 'events';
 
 @Component({
-  selector: 'app-company-management',
-  templateUrl: './company-management.component.html',
-  styleUrls: ['./company-management.component.css']
+  selector: 'app-company-management-add-list-companies',
+  templateUrl: './company-management-add-list-companies.component.html',
+  styleUrls: ['./company-management-add-list-companies.component.css']
 })
-export class CompanyManagementComponent implements OnInit {
+export class CompanyManagementAddListCompaniesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource: DataTableDataSource;
 
-  tabsService : TabsService;
-  @Input() updateDisable;
+  @Input() updateDisabled:boolean;
   companiesArray : Array<Company>;
   columnsToDisplay = ['name', 'address', 'sector'];
   selectedRowName: string = "";
   selectedCompany : Company;
 
-  constructor(private router: Router) {
-    this.tabsService = new TabsService("companyTab");
+  constructor() {
     this.companiesArray = new Array();
-
     this.companiesArray.push(new Company("Name","Address","Sector"));
     this.companiesArray.push(new Company("secondeName","secondAddress","secondSector"));
    }
 
-  ngOnInit() {
-    this.tabsService.setActive();
+   ngOnInit() {
     this.swapButton("listCompanies");
     this.dataSource = new DataTableDataSource(this.paginator, this.sort);
     this.dataSource.addCompanies(this.companiesArray);
@@ -42,15 +36,15 @@ export class CompanyManagementComponent implements OnInit {
   selectCompany(row){
     this.selectedRowName = row.name;
     this.selectedCompany = row;
-    //this.updateDisabled = true;
+    this.updateDisabled = true;
   }
+
 
   swapButton(button){
     this.removeOldActive();
     switch(button){
       case 'listCompanies':
         document.getElementById(button).classList.toggle("active");
-        this.router.navigateByUrl("/home");
         break;
       case 'addCompany' : 
         document.getElementById(button).classList.toggle("active");
@@ -68,4 +62,3 @@ export class CompanyManagementComponent implements OnInit {
   }
 
 }
-
