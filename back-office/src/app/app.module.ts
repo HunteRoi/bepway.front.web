@@ -19,13 +19,7 @@ import { CompanyManagementAddListCompaniesComponent } from './company-management
 import { CompanyManagementUpdateComponent } from './company-management-update/company-management-update.component';
 
 const appRoutes: Routes = [
- // { path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  /*
-  { path: 'user-management', redirectTo: 'dashboard/user-management', pathMatch: 'full'},
-  { path: 'road-management', redirectTo: '/dashboard/road-management', pathMatch: 'full'},
-  { path: 'company-management', redirectTo: '/dashboard/company-management', pathMatch: 'full'},
-  */
   { path: '', component: DashboardComponent, 
     children: [
       { path: 'home', component: HomeComponent },

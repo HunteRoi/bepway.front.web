@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDataSource } from './data-table-datasource';
+import { DataTableDataSource } from '../data-table-datasource';
 import { EventEmitter } from 'events';
 
 @Component({

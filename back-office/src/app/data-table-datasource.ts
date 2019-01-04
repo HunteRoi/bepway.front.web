@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Company } from '../model/Company';
+import { Company } from './model/Company';
 
 // TODO: Replace this with your own data model type
 /*export interface CompanyModel {

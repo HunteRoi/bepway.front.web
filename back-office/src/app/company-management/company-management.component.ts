@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild, Output, Input } from '@angular/core';
 import { TabsService } from '../tabs.service';
 import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDataSource } from './data-table-datasource';
+import { DataTableDataSource } from '../data-table-datasource';
 import { Router } from '@angular/router';
-import { OutputType } from '@angular/core/src/view';
 
 @Component({
   selector: 'app-company-management',
@@ -18,7 +17,7 @@ export class CompanyManagementComponent implements OnInit {
   dataSource: DataTableDataSource;
 
   tabsService : TabsService;
-  @Input() updateDisable;
+  @Input() updateDisable: any;
   companiesArray : Array<Company>;
   columnsToDisplay = ['name', 'address', 'sector'];
   selectedRowName: string = "";
@@ -26,10 +25,10 @@ export class CompanyManagementComponent implements OnInit {
 
   constructor(private router: Router) {
     this.tabsService = new TabsService("companyTab");
-    this.companiesArray = new Array();
-
-    this.companiesArray.push(new Company("Name","Address","Sector"));
-    this.companiesArray.push(new Company("secondeName","secondAddress","secondSector"));
+    this.companiesArray = [
+      new Company("Name1", "Address1", "Sector1"),
+      new Company("Name2", "Address2", "Sector2")
+    ]; //for testing purpose
    }
 
   ngOnInit() {
@@ -39,33 +38,22 @@ export class CompanyManagementComponent implements OnInit {
     this.dataSource.addCompanies(this.companiesArray);
   }
 
-  selectCompany(row){
+  selectCompany(row: any){
     this.selectedRowName = row.name;
     this.selectedCompany = row;
     //this.updateDisabled = true;
   }
 
-  swapButton(button){
+  swapButton(buttonId: string){
     this.removeOldActive();
-    switch(button){
-      case 'listCompanies':
-        document.getElementById(button).classList.toggle("active");
-        this.router.navigateByUrl("/home");
-        break;
-      case 'addCompany' : 
-        document.getElementById(button).classList.toggle("active");
-        break;
-      case 'updateCompany' : 
-        document.getElementById(button).classList.toggle("active");
-        break;
+    const element = document.getElementById(buttonId);
+    if (element != null) {
+      element.classList.toggle("active");
     }
   }
 
   removeOldActive(){
-    let div = document.getElementById("listButtons");
-    let activeButton = div.getElementsByClassName("active")[0];
-    if(activeButton != null ) activeButton.classList.toggle("active");
+    let currentlyActiveButton = document.getElementById("listButtons").getElementsByClassName("active")[0];
+    if (currentlyActiveButton != null ) currentlyActiveButton.classList.toggle("active");
   }
-
 }
-
