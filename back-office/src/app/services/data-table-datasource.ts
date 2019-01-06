@@ -2,18 +2,11 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Company } from './model/Company';
+import { Company } from '../model/Company';
 
-// TODO: Replace this with your own data model type
-/*export interface CompanyModel {
-  name: string;
-  address: string;
-  sector: string;
-}*/
 
 // TODO: replace this with real data from your application
 var companiesToDispay: Array<Company>;
-
 
 /**
  * Data source for the DataTable view. This class should

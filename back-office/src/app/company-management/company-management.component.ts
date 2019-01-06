@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, Output, Input } from '@angular/core';
-import { TabsService } from '../tabs.service';
+import { TabsService } from '../services/tabs.service';
 import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDataSource } from '../data-table-datasource';
+import { DataTableDataSource } from '../services/data-table-datasource';
 import { Router } from '@angular/router';
 import { Coordinates } from '../model/Models';
 

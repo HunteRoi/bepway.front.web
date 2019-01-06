@@ -9,7 +9,6 @@ import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserManagementComponent } from './user-management/user-management.component';
-import { RoadManagementComponent } from './road-management/road-management.component';
 import { CompanyManagementComponent } from './company-management/company-management.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
@@ -24,7 +23,6 @@ const appRoutes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'user-management', component: UserManagementComponent },
-      { path: 'road-management', component: RoadManagementComponent },
       { path: 'company-management', component: CompanyManagementComponent,
         children:[
           { path: 'list-companies', component: CompanyManagementAddListCompaniesComponent},
@@ -43,7 +41,6 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     UserManagementComponent,
-    RoadManagementComponent,
     CompanyManagementComponent,
     PageNotFoundComponent,
     HomeComponent,

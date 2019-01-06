@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { Company, Coordinates } from '../model/models';
 import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDataSource } from '../data-table-datasource';
+import { DataTableDataSource } from '../services/data-table-datasource';
 
 @Component({
   selector: 'app-company-management-add-list-companies',

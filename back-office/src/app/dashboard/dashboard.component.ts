@@ -21,9 +21,6 @@ export class DashboardComponent implements OnInit {
       case 'userTab' : 
         this.router.navigateByUrl("/user-management");
         break;
-      case 'roadTab' : 
-        this.router.navigateByUrl("/road-management");
-        break;
       case 'companyTab' : 
         this.router.navigateByUrl("/company-management");
         break;

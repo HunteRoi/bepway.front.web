@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TabsService } from '../tabs.service';
+import { TabsService } from '../services/tabs.service';
 
 @Component({
   selector: 'app-user-management',
