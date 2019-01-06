@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { User } from '../model/User';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', '../css/main.css']
+  styleUrls: ['./login.component.css']
 })
 
 export class LoginComponent implements OnInit {
@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.VALID_USERS = [
-      new User('hunteroi', 'hunteroi@bep.be'),
-      new User('imnoot', 'imnoot@bep.be')
+      new User(0, 'hunteroi', 'hunteroi@bep.be'),
+      new User(1, 'imnoot', 'imnoot@bep.be')
     ];
   }
 

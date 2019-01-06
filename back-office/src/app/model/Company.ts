@@ -1,13 +1,20 @@
+import { ActivitySector } from './ActivitySector';
+import { Coordinates } from './Coordinates';
+
 export class Company {
-    public name: string;
-    public address: string;
-    public sector: string;
-
-    constructor(name: string, address: string, sector:string) {
-        this.name = name;
-        this.address = address;
-        this.sector = sector;
-    }
-
-    // constructor() {}
+    constructor(public id: number, 
+        public idOpenData: string, 
+        public name: string, 
+        public address: string, 
+        public coordinates: Coordinates, 
+        public zoningId: number,
+        public creationDate: Date, 
+        public creatorId?: string, 
+        public imageUrl?: string, 
+        public siteUrl?: string, 
+        public description?: string, 
+        public status?: string, 
+        public activitySector?: ActivitySector, 
+        public isPremium?: boolean, 
+        public rowVersion?: string) {}
 }

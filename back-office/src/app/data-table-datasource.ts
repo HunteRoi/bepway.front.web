@@ -83,7 +83,7 @@ export class DataTableDataSource extends DataSource<Company> {
       switch (this.sort.active) {
         case 'name': return compare(a.name, b.name, isAsc);
         case 'address': return compare(+a.address, +b.address, isAsc);
-        case 'sector': return compare(+a.sector, +b.sector, isAsc);
+        case 'sector': return compare(+a.activitySector.name, +b.activitySector.name, isAsc);
         default: return 0;
       }
     });

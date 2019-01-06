@@ -4,6 +4,7 @@ import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../data-table-datasource';
 import { Router } from '@angular/router';
+import { Coordinates } from '../model/Models';
 
 @Component({
   selector: 'app-company-management',
@@ -25,17 +26,11 @@ export class CompanyManagementComponent implements OnInit {
 
   constructor(private router: Router) {
     this.tabsService = new TabsService("companyTab");
-    this.companiesArray = [
-      new Company("Name1", "Address1", "Sector1"),
-      new Company("Name2", "Address2", "Sector2")
-    ]; //for testing purpose
    }
 
   ngOnInit() {
     this.tabsService.setActive();
     this.swapButton("listCompanies");
-    this.dataSource = new DataTableDataSource(this.paginator, this.sort);
-    this.dataSource.addCompanies(this.companiesArray);
   }
 
   selectCompany(row: any){
