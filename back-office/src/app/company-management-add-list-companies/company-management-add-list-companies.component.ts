@@ -50,7 +50,7 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
   ngOnInit() {
     this.getZonings();
     this.swapButton("listCompanies");
-    this.dataSource = new DataTableDataSource(this.paginator, this.sort);
+    this.dataSource = new DataTableDataSource(this.paginator, this.sort, this.myApi);
     this.dataSource.addCompanies(this.companiesArray);
   }
 

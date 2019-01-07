@@ -3,6 +3,7 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import { Company } from '../model/classes/Company';
+import { BepwayService } from '../services/bepway.service';
 
 
 // TODO: replace this with real data from your application
@@ -16,7 +17,7 @@ var companiesToDispay: Array<Company>;
 export class DataTableDataSource extends DataSource<Company> {
   data: Array<Company> = companiesToDispay;
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(private paginator: MatPaginator, private sort: MatSort, private myApi : BepwayService) {
     super();
     this.data = new Array();
   }
@@ -61,6 +62,12 @@ export class DataTableDataSource extends DataSource<Company> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
+
+  private getPagedData2(zoningId: number){
+    companies:Array<Company>();
+    this.myApi.getAllCompaniesByZoning(this.paginator).
+  }
+
   private getPagedData(data: Array<Company>) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);

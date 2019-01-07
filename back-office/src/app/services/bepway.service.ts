@@ -1,48 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
-import { Token, Company, Zoning, User, LoginModel, ModelError } from '../model/Models';
+import { MessageService } from './message.service';
+
+import { Token, Company, Zoning, User, LoginModel } from '../model/Models';
+import { ModelError } from '../model/classes/ModelError';
 import { NoTokenException } from '../exceptions/exception';
-import { catchError, retry, tap } from 'rxjs/operators';
-import { Observable, throwError, of } from 'rxjs';
-import { ModelError as Error } from '../model/classes/ModelError';
+import { StorageAccessor } from './StorageAccessor';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BepwayService {
   readonly PAGEINDEX_DEFAULT = 0;
   readonly PAGESIZE_DEFAULT = 15;
   readonly url = "https://bepway.azurewebsites.net/api";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
-  private getTokenFromStorage(): Token {
-    return JSON.parse(localStorage.getItem("token"));
-  }
-
-  private getHttpOptions (): {
-    headers?: HttpHeaders | { [header: string]: string | string[]; };
-    observe?: 'body';
-    params?: { [param: string]: string | string[]; };
-    reportProgress?: boolean;
-    responseType?: 'json';
-    withCredentials?: boolean;
-  } {
-    const token = this.getTokenFromStorage();
+  private getHttpOptions() {
+    const token = StorageAccessor.deserializeStorage<Token>(StorageAccessor.TOKEN_KEY);
     if (!token) throw new NoTokenException();
 
     return {
       headers: new HttpHeaders(
         {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.getTokenFromStorage().accessToken}`
+          'Authorization': `Bearer ${token.accessToken}`
         }
       )
     };
   }
 
-  public getToken(user: LoginModel): Observable<Token | ModelError> {
+  public getToken(user: LoginModel): Observable<Token> {
     const httpOptions = { 
       headers: new HttpHeaders({'Content-Type':  'application/json'})
     };
@@ -82,11 +72,19 @@ export class BepwayService {
   // Error handling
   private handleError<T> (result? : T) {
     return (response: any): Observable<T> => {
-      if (response instanceof HttpErrorResponse)
-        console.log(response.error);
-        if (response.error instanceof Error && response.error['message']) console.log(response.error.message);
-      
-        return of(result as T);
+      //console.log(response);
+      if (response instanceof HttpErrorResponse) {
+        if (response.status == 404 || response.status == 400) {
+          this.log("The login or password is wrong.")
+        } else {
+          this.log("An unknown error occurred.");
+        }
+      }
+      return of(result as T);
     };
+  }
+
+  private log (message: string) {
+    this.messageService.add(message);
   }
 }

@@ -6,7 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { UserManagementComponent } from './user-management/user-management.component';
@@ -17,6 +16,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatPaginatorModule, MatSortModule, MatSelectModule } from '@angular/material';
 import { CompanyManagementAddListCompaniesComponent } from './company-management-add-list-companies/company-management-add-list-companies.component';
 import { CompanyManagementUpdateComponent } from './company-management-update/company-management-update.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -47,7 +47,8 @@ const appRoutes: Routes = [
     HomeComponent,
     DashboardComponent,
     CompanyManagementAddListCompaniesComponent,
-    CompanyManagementUpdateComponent
+    CompanyManagementUpdateComponent,
+    ErrorMessageComponent
   ],
   imports: [
     HttpClientModule,
