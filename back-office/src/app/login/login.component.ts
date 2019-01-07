@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { StorageAccessor } from '../services/StorageAccessor';
 
-import { User } from '../model/user';
+import { BepwayService } from '../services/bepway.service';
+import { LoginModel, User } from '../model/old/Models';
 
 @Component({
   selector: 'app-login',
@@ -11,49 +13,45 @@ import { User } from '../model/user';
 })
 
 export class LoginComponent implements OnInit {
-  readonly KEY = 'currentUser';
-  readonly VALID_USERS: User[];
-  readonly PASSWORD = '123';
+  readonly TOKEN_KEY = "token";
+  readonly USER_KEY = "currentUser";
+  readonly HIDDEN = { "hidden": true };
+  readonly VISIBLE = { "hidden": false };
 
-  currentUser: User;
-  title = 'back-office';
-  loginForm = this.fb.group({
+  private loginUser: LoginModel;
+  public loginForm = this.fb.group({
     login: ['', Validators.required],
     password: ['', Validators.required]
   });
+  public errorHandler: {};
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.VALID_USERS = [
-      new User(0, 'hunteroi', 'hunteroi@bep.be'),
-      new User(1, 'imnoot', 'imnoot@bep.be')
-    ];
-  }
+  constructor(private fb: FormBuilder, private router: Router, private myApi: BepwayService) {}
 
-  ngOnInit(): void {}
-
-  onLoginSubmit() {
-    if (this.loginForm.valid) {
-      const formUser = this.loginForm.value;
-      const newUser = this.VALID_USERS.find(u => u.login === formUser.login && formUser.password === this.PASSWORD) || null;
-      console.log(newUser);
-      this.currentUser = this.deserialize(this.KEY);
-      if (newUser !== null || newUser !== null && this.currentUser !== newUser) {
-        this.currentUser = newUser;
-        console.log(this.currentUser);
-        this.serialize(this.KEY, this.currentUser);
-        // this.loginForm.reset();
-        this.router.navigateByUrl('/home');
-      } else {
-        // wrong input - show message
-      }
+  ngOnInit(): void {
+    this.errorHandler = this.HIDDEN;
+    if (StorageAccessor.deserializeStorage(this.TOKEN_KEY)) {
+      this.router.navigateByUrl("/home");
     }
   }
 
-  private deserialize(key: string): User {
-    return JSON.parse(localStorage.getItem(key));
-  }
+  onLoginSubmit() {
+    if (this.loginForm.valid) {
+      this.loginUser = this.loginForm.value;
 
-  private serialize(key: string, value: any): void {
-    localStorage.setItem(key, JSON.stringify(value));
+      this.myApi.getToken(this.loginUser).subscribe(
+        result => {
+          this.errorHandler = this.HIDDEN;
+          StorageAccessor.serializeStorage(this.TOKEN_KEY, result);
+          this.myApi.getUser(this.loginUser.login).subscribe(
+            result => {
+              StorageAccessor.serializeStorage(this.USER_KEY, result);
+              this.router.navigateByUrl("/home");
+            },
+            error => this.errorHandler = this.VISIBLE
+          );
+        },
+        error => this.errorHandler = this.VISIBLE
+      );
+    }
   }
 }

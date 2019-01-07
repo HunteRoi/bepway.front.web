@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, Input } from '@angular/core';
-import { TabsService } from '../services/tabs.service';
+import { TabsService } from '../services/tab.service';
 import { Company } from '../model/Company';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../services/data-table-datasource';

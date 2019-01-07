@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
@@ -49,13 +50,14 @@ const appRoutes: Routes = [
     CompanyManagementUpdateComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     ReactiveFormsModule,
     MatTableModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // debug only
+      //{ enableTracing: true } // debug only
     ),
     MatPaginatorModule,
     MatSortModule

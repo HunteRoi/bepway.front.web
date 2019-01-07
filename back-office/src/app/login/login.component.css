@@ -1,3 +1,15 @@
+ .hidden {
+  display: none;
+}
+
+.disabled {
+  background: #4d81b9;
+}
+
+.error {
+  color: red;
+}
+
 .image {
   margin: auto auto;
   display: block;
@@ -357,7 +369,7 @@ iframe {
 }
 
 .login100-form-btn:hover {
-  background: #4d81b9;
+  background: #009AC6;
 }
 
 

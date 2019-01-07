@@ -10,46 +10,55 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class BepwayService {
+  readonly PAGEINDEX_DEFAULT = 0;
+  readonly PAGESIZE_DEFAULT = 17;
   readonly url = "https://bepway.azurewebsites.net/api";
-  readonly token: string;
 
   constructor(private http: HttpClient) {}
 
-  private handleError(response: HttpErrorResponse) {
-    let error: string;
-    if (response.error instanceof ErrorEvent) {
-      // client-side or network error
-      error = "An error occurred. Please check your connection and try again.";
-    } else {
-      // unsuccessfull code returned by backend
-      error = "An error occurred while requesting the data.";
-    }
-    return throwError(error);
+  private getTokenFromStorage(): Token {
+    return JSON.parse(localStorage.getItem("token"));
   }
 
-  public getToken(login: LoginModel) {
+  private getHeaders (): {} {
+    const token = this.getTokenFromStorage();
+    if (!token) throw new NoTokenException();
+
+    return {
+      headers: new HttpHeaders(
+        {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.getTokenFromStorage().accessToken}`
+        }
+      )
+    };
+  }
+
+  public getToken(user: LoginModel): Observable<Token> {
     const httpOptions = { 
       headers: new HttpHeaders({'Content-Type':  'application/json'})
     };
     
-    this.http.post<Token>(`${this.url}/jwt`, login, httpOptions).pipe(
-      retry(5),
-      catchError(this.handleError)
-    );
+    return this.http.post<Token>(`${this.url}/jwt`, user, httpOptions);
   }
 
-  public getUsers(pageIndex = 0, pageSize = 15, userName?: string) {
-    if (this.token === null) throw new NoTokenException();
+  public getUser(login: string): Observable<User> {
+    const httpOptions = this.getHeaders();
+    return this.http.get<User>(`${this.url}/user/${login}`, httpOptions);
+  }
 
-    const httpOptions = {
-      headers: new HttpHeaders(
-        {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.token}`
-        }
-      )
-    }
-    
-    return this.http.get<User>(`${this.url}/user?pageIndex=${pageIndex}&pageSize=${pageSize}${userName !== null ? "userName="+userName : ""}`, httpOptions);
+  public getUsers(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT, userName?: string) {
+    const httpOptions = this.getHeaders();
+    return this.http.get<User>(`${this.url}/user?pageIndex=${pageIndex}&pageSize=${pageSize}${userName !== null ? "&userName="+userName : ""}`, httpOptions);
+  }
+
+  public getAllCompanies(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT){
+    const httpOptions = this.getHeaders();
+    return this.http.get<Company>(`${this.url}/companies?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions);
+  }
+
+  public getAllCompaniesByZoning(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT, zoningId: number){
+    const httpOptions = this.getHeaders();
+    return this.http.get<Company>(`${this.url}/companies?pageIndex=${pageIndex}&pageSize=${pageSize}&zoningId=${zoningId}`, httpOptions);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
-import { Company, Coordinates } from '../model/models';
+import { Company, Coordinates } from '../model/old/models';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../services/data-table-datasource';
 

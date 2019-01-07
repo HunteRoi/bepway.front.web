@@ -1,4 +1,4 @@
-<!-- template src from : https://colorlib.com/etc/lf/Login_v1/index.html# -->
+  <!-- template src from : https://colorlib.com/etc/lf/Login_v1/index.html# -->
 
 <div class="limiter">
   <div class="container-login100">
@@ -26,6 +26,10 @@
           <input formControlName="password" class="input100" type="password" name="password" placeholder="Password" autocomplete="false" data-kwimpalastatus="alive" data-kwimpalaid="1543223420442-2">
           <span class="focus-input100"></span>
           <span class="symbol-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
+        </div>
+
+        <div [ngClass]="errorHandler">
+          <span class="error">The login or the password is not valid!</span>
         </div>
 
         <div class="container-login100-form-btn">
