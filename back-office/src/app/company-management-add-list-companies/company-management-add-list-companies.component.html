@@ -1,8 +1,13 @@
 <div id="selectZoning">
   Zoning : 
-  <select>
-    
-  </select>
+  <mat-form-field>
+    <mat-select [(value)]="selectedZoning">
+      <mat-option value="">Aucun zoning</mat-option>
+      <mat-option *ngFor="let zoning of zonings" [value]="zoning.id" (click)="getCompanies()">
+        {{zoning.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <div [class.mat-elevation-z8]="isActive">

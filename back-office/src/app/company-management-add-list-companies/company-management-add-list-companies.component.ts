@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
-import { Company, Coordinates } from '../model/old/models';
+import { Company, Coordinates, Zoning } from '../model/classes/Models';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../services/data-table-datasource';
+import { BepwayService } from '../services/bepway.service';
 
 @Component({
   selector: 'app-company-management-add-list-companies',
@@ -13,14 +14,17 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource: DataTableDataSource;
+  zonings : Zoning[];
+  companiesToDisplay : Company[];
+  selectedZoning:any;
 
   @Input() updateDisabled:boolean;
   companiesArray : Array<Company>;
   columnsToDisplay = ['name', 'address', 'sector'];
-  selectedRowName: string = "";
+  selectedRowName = "";
   selectedCompany : Company;
 
-  constructor() {
+  constructor(private myApi: BepwayService) {
     this.companiesArray = [
       new Company(0, "idOpenData0", "name0", "address0", new Coordinates(50, 5), 0, new Date()),
       new Company(1, "idOpenData1", "name1", "address1", new Coordinates(50, 5), 0, new Date()),
@@ -44,9 +48,23 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getZonings();
     this.swapButton("listCompanies");
     this.dataSource = new DataTableDataSource(this.paginator, this.sort);
     this.dataSource.addCompanies(this.companiesArray);
+  }
+
+  getZonings(){
+    this.myApi.getAllZonings()
+      .subscribe(zonings => this.zonings = zonings);
+    console.log(this.zonings);
+  }
+
+  getCompanies(){
+    this.selectedZoning = Number(this.selectedZoning);
+    this.myApi.getAllCompaniesByZoning(this.selectedZoning)
+    .subscribe(companies => this.companiesToDisplay = companies);
+    console.log(this.companiesToDisplay);
   }
 
   selectCompany(row){

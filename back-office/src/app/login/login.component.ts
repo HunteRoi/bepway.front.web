@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { StorageAccessor } from '../services/StorageAccessor';
 
 import { BepwayService } from '../services/bepway.service';
-import { LoginModel, User } from '../model/old/Models';
+import { LoginModel, User, Token } from '../model/classes/Models';
+
 
 @Component({
   selector: 'app-login',
@@ -23,13 +24,16 @@ export class LoginComponent implements OnInit {
     login: ['', Validators.required],
     password: ['', Validators.required]
   });
-  public errorHandler: {};
+  public loginErrorHandler: {};
+  public unknownErrorHandler: {};
 
   constructor(private fb: FormBuilder, private router: Router, private myApi: BepwayService) {}
 
   ngOnInit(): void {
-    this.errorHandler = this.HIDDEN;
-    if (StorageAccessor.deserializeStorage(this.TOKEN_KEY)) {
+    this.errorsHandler(false, false);
+
+    let token = StorageAccessor.deserializeStorage<Token>(this.TOKEN_KEY);
+    if (token && token instanceof Token) {
       this.router.navigateByUrl("/home");
     }
   }
@@ -37,21 +41,40 @@ export class LoginComponent implements OnInit {
   onLoginSubmit() {
     if (this.loginForm.valid) {
       this.loginUser = this.loginForm.value;
-
       this.myApi.getToken(this.loginUser).subscribe(
         result => {
-          this.errorHandler = this.HIDDEN;
-          StorageAccessor.serializeStorage(this.TOKEN_KEY, result);
-          this.myApi.getUser(this.loginUser.login).subscribe(
-            result => {
-              StorageAccessor.serializeStorage(this.USER_KEY, result);
-              this.router.navigateByUrl("/home");
-            },
-            error => this.errorHandler = this.VISIBLE
-          );
-        },
-        error => this.errorHandler = this.VISIBLE
+          if (result && result['access_token']) this.registerTokenAndUser(result as Token);
+          else this.displayLoginError();
+        }
       );
     }
+  }
+
+  private registerTokenAndUser(result: Token) {
+    StorageAccessor.serializeStorage<Token>(this.TOKEN_KEY, result);
+    this.myApi.getUser(this.loginUser.login).subscribe(
+      result => {
+        if (result instanceof User) {
+          StorageAccessor.serializeStorage<User>(this.USER_KEY, result);
+        } else this.displayUnknownError();
+      }
+    );
+  }
+
+  // error handling
+  private displayLoginError() {
+    this.errorsHandler(true);
+  }
+
+  private displayUnknownError() {
+    this.errorsHandler(undefined, true);
+  }
+
+  private errorsHandler(login = false, unknown = false) {
+    this.loginErrorHandler = this.HIDDEN;
+    this.unknownErrorHandler = this.HIDDEN;
+    
+    if (login) this.loginErrorHandler = this.VISIBLE;
+    if (unknown) this.unknownErrorHandler = this.VISIBLE;
   }
 }

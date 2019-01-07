@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Company } from '../model/old/Company';
+import { Company } from '../model/classes/Company';
 
 
 // TODO: replace this with real data from your application
@@ -23,6 +23,10 @@ export class DataTableDataSource extends DataSource<Company> {
 
   addCompanies(companies:Array<Company>){
     for(let company of companies) this.data.push(company);
+  }
+
+  setCompanies(companies: Array<Company>){
+    this.data = companies;
   }
 
   /**

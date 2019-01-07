@@ -28,8 +28,9 @@
           <span class="symbol-input100"><i class="fa fa-lock" aria-hidden="true"></i></span>
         </div>
 
-        <div [ngClass]="errorHandler">
-          <span class="error">The login or the password is not valid!</span>
+        <div>
+          <span [ngClass]="loginErrorHandler" class="error">The login or the password is not valid!</span>
+          <span [ngClass]="unknownErrorHandler" class="error">An unknown error occurred. Try again later!</span>
         </div>
 
         <div class="container-login100-form-btn">

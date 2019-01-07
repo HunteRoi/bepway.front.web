@@ -14,7 +14,7 @@ import { CompanyManagementComponent } from './company-management/company-managem
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatPaginatorModule, MatSortModule, MatSelectModule } from '@angular/material';
 import { CompanyManagementAddListCompaniesComponent } from './company-management-add-list-companies/company-management-add-list-companies.component';
 import { CompanyManagementUpdateComponent } from './company-management-update/company-management-update.component';
 
@@ -60,7 +60,8 @@ const appRoutes: Routes = [
       //{ enableTracing: true } // debug only
     ),
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
