@@ -4,4 +4,5 @@
 cd src
 npm install
 //ng build
-ng serve```
+ng serve
+```
