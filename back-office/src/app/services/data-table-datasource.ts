@@ -64,8 +64,8 @@ export class DataTableDataSource extends DataSource<Company> {
    */
 
   private getPagedData2(zoningId: number){
-    companies:Array<Company>();
-    this.myApi.getAllCompaniesByZoning(this.paginator).
+    this.myApi.getAllCompaniesByZoning(zoningId, this.paginator.pageIndex, this.paginator.pageSize)
+    .subscribe(result => this.data = result);
   }
 
   private getPagedData(data: Array<Company>) {

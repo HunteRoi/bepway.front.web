@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { StorageAccessor } from '../services/StorageAccessor';
 
+import { StorageAccessor } from '../services/StorageAccessor';
 import { BepwayService } from '../services/bepway.service';
 import { LoginModel, User, Token } from '../model/classes/Models';
 
@@ -45,7 +45,8 @@ export class LoginComponent implements OnInit {
     this.myApi.getUser(this.loginUser.login).subscribe(
       result => {
         if (result) {
-          StorageAccessor.serializeStorage<User>(StorageAccessor.USER_KEY, result);
+          StorageAccessor.serializeStorage<User>(StorageAccessor.USER_KEY, result as User);
+          this.router.navigateByUrl("/home");
         }
       }
     );
