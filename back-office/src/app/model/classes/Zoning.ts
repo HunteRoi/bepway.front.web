@@ -1,6 +1,9 @@
+import { Zoning as z } from '../models';
+
 import { Coordinates } from './Coordinates';
 
-export class Zoning  {
+
+export class Zoning implements z {
     constructor(public id: number,
     public idOpenData: string,
     public name: string,

@@ -6,3 +6,8 @@ export class NoTokenException {
     get Message (): string { return this.message; }
 }
 
+export class NoItemException {
+    constructor() {}
+
+    get Message (): string { return "This item has not been found."; }
+}

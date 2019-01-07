@@ -1,4 +1,6 @@
-export class User {
+import { User as u } from '../models';
+
+export class User implements u {
     constructor(public id: number,
         public login: string,
         public email?: string,

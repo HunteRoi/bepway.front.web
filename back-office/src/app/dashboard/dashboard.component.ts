@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { StorageAccessor } from '../services/StorageAccessor';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -27,4 +29,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onLogoff() {
+    if (StorageAccessor.clearStorage()) this.router.navigateByUrl("/login");
+  }
 }

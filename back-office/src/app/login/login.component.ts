@@ -24,9 +24,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     let token = StorageAccessor.deserializeStorage<Token>(StorageAccessor.TOKEN_KEY);
-    if (token && token instanceof Token) {
-      this.router.navigateByUrl("/home");
-    }
+    if (token && token['accessToken']) this.router.navigateByUrl("/home");
   }
 
   onLoginSubmit() {
@@ -35,7 +33,8 @@ export class LoginComponent implements OnInit {
       this.myApi.getToken(this.loginUser).subscribe(
         result => {
           if (result && result['access_token']) this.registerTokenAndUser(result as Token);
-        }
+        },
+        error => console.log(error)
       );
     }
   }
@@ -48,7 +47,8 @@ export class LoginComponent implements OnInit {
           StorageAccessor.serializeStorage<User>(StorageAccessor.USER_KEY, result as User);
           this.router.navigateByUrl("/home");
         }
-      }
+      },
+      error => console.log(error)
     );
   }
 }

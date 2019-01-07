@@ -26,7 +26,7 @@ export class BepwayService {
       headers: new HttpHeaders(
         {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token.accessToken}`
+          'Authorization': `Bearer ${token['access_token']}`
         }
       )
     };
