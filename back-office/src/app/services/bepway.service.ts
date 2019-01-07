@@ -21,7 +21,6 @@ export class BepwayService {
   private getHttpOptions() {
     const token = StorageAccessor.deserializeStorage<Token>(StorageAccessor.TOKEN_KEY);
     if (!token) throw new NoTokenException();
-
     return {
       headers: new HttpHeaders(
         {
@@ -54,9 +53,9 @@ export class BepwayService {
     return this.http.get<User>(`${this.url}/user?pageIndex=${pageIndex}&pageSize=${pageSize}${userName !== null ? "&userName="+userName : ""}`, httpOptions);
   }
 
-  public getAllCompanies(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company>{
+  public getAllCompanies(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company[]>{
     const httpOptions = this.getHttpOptions();
-    return this.http.get<Company>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions);
+    return this.http.get<Company[]>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions);
   }
 
   public getAllCompaniesByZoning(zoningId: number, pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company[]>{

@@ -2,12 +2,13 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-import { Company } from '../model/classes/Company';
+import { Company, Zoning } from '../model/classes/Models';
 import { BepwayService } from '../services/bepway.service';
+import { e } from '@angular/core/src/render3';
 
 
 // TODO: replace this with real data from your application
-var companiesToDispay: Array<Company>;
+//var companiesToDispay: Array<Company>;
 
 /**
  * Data source for the DataTable view. This class should
@@ -15,20 +16,19 @@ var companiesToDispay: Array<Company>;
  * (including sorting, pagination, and filtering).
  */
 export class DataTableDataSource extends DataSource<Company> {
-  data: Array<Company> = companiesToDispay;
+  data: Array<Company>;
+  dataTest: Array<Company>;
+  NO_ZONING_SPECIFIED = -1;
+  zoning:Zoning;
 
-  constructor(private paginator: MatPaginator, private sort: MatSort, private myApi : BepwayService) {
+  constructor(private paginator: MatPaginator, private sort: MatSort, private myApi : BepwayService, zoning:Zoning) {
     super();
     this.data = new Array();
+    this.zoning = zoning;
+    //this.fillData();
   }
 
-  addCompanies(companies:Array<Company>){
-    for(let company of companies) this.data.push(company);
-  }
 
-  setCompanies(companies: Array<Company>){
-    this.data = companies;
-  }
 
   /**
    * Connect this data source to the table. The table will only update when
@@ -38,6 +38,11 @@ export class DataTableDataSource extends DataSource<Company> {
   connect(): Observable<Array<Company>> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
+    
+   
+    //return this.myApi.getAllCompanies(this.paginator.pageIndex, this.paginator.pageSize);
+      
+
     const dataMutations = [
       observableOf(this.data),
       this.paginator.page,
@@ -45,11 +50,14 @@ export class DataTableDataSource extends DataSource<Company> {
     ];
 
     // Set the paginator's length
-    this.paginator.length = this.data.length;
+    this.paginator.length = (this.zoning != null) ? Math.trunc(this.zoning.nbImplantations / this.paginator.pageSize) + 1 : 100;
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
-    }));
+    return this.getPagedData();
+
+    // return merge(...dataMutations).pipe(map(() => {
+    //   return this.getPagedData(this.getSortedData(this.data));
+    // }));
+
   }
 
   /**
@@ -63,14 +71,42 @@ export class DataTableDataSource extends DataSource<Company> {
    * this would be replaced by requesting the appropriate data from the server.
    */
 
-  private getPagedData2(zoningId: number){
-    this.myApi.getAllCompaniesByZoning(zoningId, this.paginator.pageIndex, this.paginator.pageSize)
-    .subscribe(result => this.data = result);
-  }
+  /*private getPagedData(){
+    this.data.length = 0;
+    let companies = new Array();
+    if(this.zoningId == this.NO_ZONING_SPECIFIED){
+      this.myApi.getAllCompanies(this.paginator.pageIndex, this.paginator.pageSize)
+      .subscribe(result => {
+        for(let company of result){
+          companies.push(company);
+          //this.addCompany(company);
+        }
+      });
+    }
+    else{
+      this.myApi.getAllCompaniesByZoning(this.zoningId, this.paginator.pageIndex, this.paginator.pageSize)
+      .subscribe(result => {
+        for(let company of result){
+          companies.push(company);
+          //this.addCompany(company);
+        }
+      });
+    }
+    this.setCompanies(companies);
+    console.log(companies);
+    return companies;
+  }*/
 
-  private getPagedData(data: Array<Company>) {
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    return data.splice(startIndex, this.paginator.pageSize);
+  private getPagedData(/*data: Array<Company>*/) {
+    console.log(this.paginator.pageSize);
+    if(this.zoning == null){
+      return this.myApi.getAllCompanies(this.paginator.pageIndex, this.paginator.pageSize);
+    }
+    else{
+      return this.myApi.getAllCompaniesByZoning(this.zoning.id, this.paginator.pageIndex, this.paginator.pageSize);
+    }
+    // const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+    // return data.splice(startIndex, this.paginator.pageSize);
   }
 
   /**
