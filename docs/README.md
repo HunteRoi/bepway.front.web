@@ -1,8 +1,8 @@
 # Compiler et lancer
 
 ```
-cd src
+cd .\src\bepway\
 npm install
-//ng build
+ng build
 ng serve
 ```
