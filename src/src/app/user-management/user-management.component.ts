@@ -3,6 +3,8 @@ import { TabsService } from '../services/tab.service';
 import { MatPaginator, MatSort } from '@angular/material';
 import { UserDataTable } from '../services/user-data-table-datasource';
 import { BepwayService } from '../services/bepway.service';
+import { User } from '../model/classes/Models';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-management',
@@ -15,6 +17,7 @@ export class UserManagementComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   dataSource: UserDataTable;
   tabsService : TabsService;
+  selectedUser: User;
   selectedRowName = "";
   columnsToDisplay = ['Login', 'Email', 'Role'];
 
@@ -24,12 +27,20 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
     this.tabsService.setActive();
+    
     this.dataSource = new UserDataTable(this.paginator, this.sort, this.myApi);
     //this.getUsers();
   }
 
   selectCompany(row){
+    this.selectedUser = row;
     this.selectedRowName = row.login;
+  }
+
+  updateUser(){
+    if(this.selectedUser){
+
+    }
   }
 
 }

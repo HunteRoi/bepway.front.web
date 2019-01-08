@@ -85,7 +85,7 @@ export class BepwayService {
   // Error handling
   private handleError<T> (result? : T) {
     return (response: any): Observable<T> => {
-      console.log(response);
+      //console.log(response);
       if (response instanceof HttpErrorResponse) {
         if (response.status == 404 || response.status == 400) {
           this.log("The login or password is wrong.")

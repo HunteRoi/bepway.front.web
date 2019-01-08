@@ -16,7 +16,6 @@ import { BepwayService } from '../services/bepway.service';
  */
 export class UserDataTable extends DataSource<User> {
   data: User[];
-  dataTest: Array<User>;
 
   constructor(private paginator: MatPaginator, private sort: MatSort, private myApi : BepwayService) {
     super();
@@ -29,7 +28,7 @@ export class UserDataTable extends DataSource<User> {
   
   getTotalUsers(){
     let promise = new Promise((resolve, reject)=>{
-      this.myApi.getUsers(this.paginator.pageIndex, 1000)
+      this.myApi.getUsers(this.paginator.pageIndex, 100)
         .toPromise()
         .then(res => {
           this.paginator.length = res.length

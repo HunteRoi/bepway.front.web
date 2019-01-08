@@ -17,18 +17,26 @@ import { MatPaginatorModule, MatSortModule, MatSelectModule } from '@angular/mat
 import { CompanyManagementAddListCompaniesComponent } from './company-management-add-list-companies/company-management-add-list-companies.component';
 import { CompanyManagementUpdateComponent } from './company-management-update/company-management-update.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
+import { UserManagementUpdateComponent } from './user-management-update/user-management-update.component';
+import { UserManagementListUsersComponent } from './user-management-list-users/user-management-list-users.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', component: DashboardComponent, 
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'user-management', component: UserManagementComponent },
+      { path: 'user-management', component: UserManagementComponent,
+        children:[
+          { path: 'list-users', component: UserManagementListUsersComponent },
+          { path: 'update-user', component: UserManagementUpdateComponent },
+          { path: '', redirectTo: 'list-users', pathMatch: 'full'}
+        ]
+      },
       { path: 'company-management', component: CompanyManagementComponent,
         children:[
           { path: 'list-companies', component: CompanyManagementAddListCompaniesComponent},
           { path: 'update-company', component: CompanyManagementUpdateComponent},
-          { path: '', redirectTo:'list-companies', pathMatch: 'full'}
+          { path: '', redirectTo: 'list-companies', pathMatch: 'full'}
         ] 
       },
       { path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -48,7 +56,9 @@ const appRoutes: Routes = [
     DashboardComponent,
     CompanyManagementAddListCompaniesComponent,
     CompanyManagementUpdateComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    UserManagementUpdateComponent,
+    UserManagementListUsersComponent
   ],
   imports: [
     HttpClientModule,

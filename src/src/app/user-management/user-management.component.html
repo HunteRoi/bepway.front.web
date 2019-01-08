@@ -20,6 +20,9 @@
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr (click)="selectCompany(row)" (updateDisabledChange)="selectCompany(row)" [ngClass]="{'highlight' : selectedRowName == row.login}" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
   </table>
+
+  <button style="margin-top : 10px;" (click)="updateUser()">UPDATE</button>
+  
     
   <mat-paginator #paginator id="paging"
       [length]="dataSource.data.length"
