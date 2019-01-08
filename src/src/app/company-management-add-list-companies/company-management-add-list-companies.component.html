@@ -1,3 +1,14 @@
+<div id="listButtons">
+    <span>
+      <button id='updateCompany' >Update company</button>
+    </span>
+    <span>
+        <button id='deleteCompany' (click)="deleteCompany()">Delete company</button>
+    </span>
+</div>
+
+<p id="errorMessage"></p>
+
 <div id="selectZoning">
     Zoning : 
     <mat-form-field>
@@ -20,48 +31,4 @@
       <td>{{company.activitySector == null ? "Secteur non spécifie" : company.activitySector.name }}</td>
     </tr>
   </table>
-  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
-
-<!-- <div id="selectZoning">
-  Zoning : 
-  <mat-form-field>
-    <mat-select [(value)]="selectedZoning">
-      <mat-option value="">Aucun zoning</mat-option>
-      <mat-option *ngFor="let zoning of zonings" [value]="zoning.id" (click)="getCompanies()">
-        {{zoning.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-
-<div [class.mat-elevation-z8]="isActive">
-  <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
-    
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let row">{{row.name}}</td>
-    </ng-container>
-
-    
-    <ng-container matColumnDef="address">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-      <td mat-cell *matCellDef="let row">{{row.address}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="sector">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sector</th>
-        <td mat-cell *matCellDef="let row">{{row.activitySector.name}}</td>
-      </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr (click)="selectCompany(row)" (updateDisabledChange)="selectCompany(row)" [ngClass]="{'highlight' : selectedRowName == row.name}" mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
-  </table>
-    
-  <mat-paginator #paginator id="paging"
-      [length]="dataSource.data.length"
-      [pageIndex]="0"
-      [pageSize]="15"
-      [pageSizeOptions]="[5,15,30]">
-  </mat-paginator>
-  
-</div> -->
+<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>

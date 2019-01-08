@@ -5,3 +5,18 @@
 .highlight{
     background-color: #ccc;
 }
+
+#listButtons{
+    margin : 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#errorMessage{
+    margin : 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:red;
+}

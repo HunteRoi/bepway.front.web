@@ -9,12 +9,13 @@ import { User } from '../model/classes/Models';
 })
 export class UserManagementListUsersComponent implements OnInit {
   readonly DEFAULT_PAGE_SIZE = 15;
+  readonly ADMIN_ROLE = "Admin";
   pageSize:number;
   pageIndex:number;
   pageIndexTable:number;
   total:number;
   users:User[];
-  selectedRowLogin = "";
+  selectedRowLogin:String;
   selectedUser:User;
 
   constructor(private myApi:BepwayService) { }
@@ -52,7 +53,11 @@ export class UserManagementListUsersComponent implements OnInit {
   }
 
   selectUser(user){
-    this.selectUser = user;
+    this.selectedUser = user;
     this.selectedRowLogin = user.login;
+  }
+
+  deleteUser(){
+    
   }
 }

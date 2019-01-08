@@ -19,7 +19,6 @@ export class UserManagementComponent implements OnInit {
   tabsService : TabsService;
   selectedUser: User;
   selectedRowName = "";
-  columnsToDisplay = ['Login', 'Email', 'Role'];
 
   constructor(private myApi: BepwayService) {
     this.tabsService = new TabsService("userTab");
@@ -27,24 +26,11 @@ export class UserManagementComponent implements OnInit {
 
   async ngOnInit() {
     this.tabsService.setActive();
-    this.dataSource = new UserDataTable(this.paginator, this.sort, this.myApi);
-    
-    //this.getUsers();
-  }
-
-  async getData(){
-    this.dataSource = new UserDataTable(this.paginator, this.sort, this.myApi);
   }
 
   selectCompany(row){
     this.selectedUser = row;
     this.selectedRowName = row.login;
-  }
-
-  updateUser(){
-    if(this.selectedUser){
-
-    }
   }
 
 }

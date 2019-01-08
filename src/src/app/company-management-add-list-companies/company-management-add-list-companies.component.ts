@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
-import { Company, Coordinates, Zoning } from '../model/classes/Models';
-import { MatPaginator, MatSort } from '@angular/material';
-import { DataTableDataSource } from '../services/data-table-datasource';
+import { Component, OnInit } from '@angular/core';
+import { Company, Zoning } from '../model/classes/Models';
 import { BepwayService } from '../services/bepway.service';
-import { CompanyManagementComponent } from '../company-management/company-management.component';
-import { Router } from '@angular/router';
+import { MessageService } from '../services/message.service';
+
 
 @Component({
   selector: 'app-company-management-add-list-companies',
@@ -28,6 +26,8 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
 
   readonly DEFAULT_PAGE_SIZE = 15;
   readonly NO_ZONING_SPECIFIED = -1;
+  readonly ADMIN_ROLE = "Admin";
+  readonly GESTIONNARY_ROLE = "Gestionnary"
   pageSize:number;
   pageIndex:number;
   pageIndexTable:number;
@@ -35,16 +35,15 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
   companies:Company[];
   zonings:Zoning[];
   selectedZoningId:number;
-  selectedRowName = "";
+  selectedRowName :String;
   selectedCompany : Company;
   deleteButton:any;
 
-  constructor(private myApi: BepwayService) {
+  constructor(private myApi: BepwayService, private messageService: MessageService) {
   }
 
   async ngOnInit() {
     this.deleteButton = document.getElementById("deleteCompany");
-    this.swapButton("listCompanies");
     this.selectedZoningId = this.NO_ZONING_SPECIFIED;
     this.total = 0;
     this.pageIndex = 0;
@@ -111,25 +110,12 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
     this.selectedCompany = row;
   }
 
-  swapButton(button){
-    this.removeOldActive();
-    switch(button){
-      case 'listCompanies':
-        document.getElementById(button).classList.toggle("active");
-        break;
-      case 'addCompany' : 
-        document.getElementById(button).classList.toggle("active");
-        break;
-      case 'updateCompany' : 
-        document.getElementById(button).classList.toggle("active");
-        break;
+  deleteCompany(){
+    if(this.selectedCompany == null){
+        document.getElementById("errorMessage").innerHTML = "Veuillez sélectionner une entreprise";
+    }
+    else{
+      
     }
   }
-
-  removeOldActive(){
-    let div = document.getElementById("listButtons");
-    let activeButton = div.getElementsByClassName("active")[0];
-    if(activeButton != null ) activeButton.classList.toggle("active");
-  }
-
 }
