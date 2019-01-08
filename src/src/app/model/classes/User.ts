@@ -1,4 +1,4 @@
-import { User as u } from '../models';
+import { User as u } from '../interfaces/Models';
 
 export class User implements u {
     constructor(public id: number,

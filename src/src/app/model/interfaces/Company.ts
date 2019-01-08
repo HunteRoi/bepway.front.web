@@ -25,7 +25,7 @@ export interface Company {
     activitySector?: ActivitySector;
     coordinates: Coordinates;
     zoningId: number;
-    creatorId: string;
+    creatorId?: string;
     creationDate: Date;
     isPremium?: boolean;
     rowVersion?: string;

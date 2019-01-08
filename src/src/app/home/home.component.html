@@ -1,12 +1,14 @@
-<p> Welcome Username ! </p>
-<p id="currentDate">Date</p>
-<p> This is the dashboard for our back-office ! </p>
-<p> select a tab or one the following link to navigate </p>
-<div id="links">
-	<a href="/user-management">User management</a> | <a href="company-management">Company management</a>
+<p>Welcome <span class="bold" *ngIf="user | async">{{ currentUser['login'] | titlecase }}</span> !</p>
+<p>This is the dashboard for our back-office !</p>
+<div>
+	<p>Select a tab or one of the following link to navigate :
+		<span id="links">
+			<a href="/user-management">User management</a> | <a href="company-management">Company management</a>
+		</span>
+	</p>
 </div>
 <fieldset>
 	<legend>To do</legend>
-	<textarea id="toDoBlock" placeholder="Things to do"></textarea>
+	<textarea id="toDoBlock" placeholder="Things to do" *ngIf="user | async">{{ currentUser['todoList'] }}</textarea>
 </fieldset>
 <img src="src\assets\image\app_logo.svg" id="logo" height="120" width="240">

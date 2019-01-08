@@ -1,11 +1,11 @@
-import { NoItemException } from "../exceptions/exception";
+import { NoItemException } from "../model/exceptions/exception";
 
 
 export class StorageAccessor {
     static readonly TOKEN_KEY = "token";
     static readonly USER_KEY = "currentUser";
     
-    private static Exists(key: string): boolean {
+    public static Exists(key: string): boolean {
         return localStorage.getItem(key) !== null;
     }
 

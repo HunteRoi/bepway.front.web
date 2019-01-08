@@ -1,4 +1,4 @@
-import { Zoning as z } from '../models';
+import { Zoning as z } from '../interfaces/Models';
 
 import { Coordinates } from './Coordinates';
 

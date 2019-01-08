@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { StorageAccessor } from '../services/StorageAccessor';
 import { BepwayService } from '../services/bepway.service';
-import { LoginModel, User, Token } from '../model/classes/Models';
+import { LoginModel, Token } from '../model/classes/Models';
 
 
 @Component({
@@ -32,23 +32,14 @@ export class LoginComponent implements OnInit {
       this.loginUser = this.loginForm.value;
       this.myApi.getToken(this.loginUser).subscribe(
         result => {
-          if (result && result['access_token']) this.registerTokenAndUser(result as Token);
+          if (result && result['access_token']) {
+            StorageAccessor.serializeStorage<Token>(StorageAccessor.TOKEN_KEY, result);
+            StorageAccessor.serializeStorage<string>(StorageAccessor.USER_KEY, this.loginUser.login);
+            this.router.navigateByUrl("/home");
+          }
         },
         error => console.log(error)
       );
     }
-  }
-
-  private registerTokenAndUser(result: Token) {
-    StorageAccessor.serializeStorage<Token>(StorageAccessor.TOKEN_KEY, result);
-    this.myApi.getUser(this.loginUser.login).subscribe(
-      result => {
-        if (result) {
-          StorageAccessor.serializeStorage<User>(StorageAccessor.USER_KEY, result as User);
-          this.router.navigateByUrl("/home");
-        }
-      },
-      error => console.log(error)
-    );
   }
 }

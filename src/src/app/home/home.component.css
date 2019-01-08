@@ -20,3 +20,7 @@
     float:right;
     margin-right : 100px;
 }
+
+.bold {
+    font-weight: bold;
+}

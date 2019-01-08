@@ -5,9 +5,8 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from './message.service';
 
-import { Token, Company, Zoning, User, LoginModel } from '../model/Models';
-import { ModelError } from '../model/classes/ModelError';
-import { NoTokenException } from '../exceptions/exception';
+import { Token, Company, Zoning, User, LoginModel } from '../model/interfaces/Models';
+import { NoTokenException } from '../model/exceptions/exception';
 import { StorageAccessor } from './StorageAccessor';
 
 @Injectable({ providedIn: 'root' })
@@ -41,42 +40,57 @@ export class BepwayService {
     );
   }
 
-  public getUser(login: string): Observable<User> {
+  public getUser(id: number): Observable<User> {
+    const httpOptions = this.getHttpOptions();
+    return this.http.get<User>(`${this.url}/user/${id}`, httpOptions).pipe(
+      catchError(this.handleError(undefined))
+    );
+  }
+
+  public getUserByLogin(login: string): Observable<User> {
     const httpOptions = this.getHttpOptions();
     return this.http.get<User>(`${this.url}/user/${login}`, httpOptions).pipe(
       catchError(this.handleError(undefined))
     );
   }
 
-  public getUsers(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT, userName?: string) {
+  public getUsers(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT, userName?: string): Observable<User[]> {
     const httpOptions = this.getHttpOptions();
-    return this.http.get<User>(`${this.url}/user?pageIndex=${pageIndex}&pageSize=${pageSize}${userName !== null ? "&userName="+userName : ""}`, httpOptions);
+    return this.http.get<User[]>(`${this.url}/user?pageIndex=${pageIndex}&pageSize=${pageSize}${userName !== undefined ? "&userName="+userName : ""}`, httpOptions).pipe(
+      catchError(this.handleError([]))
+    );
   }
 
   public getAllCompanies(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company[]>{
     const httpOptions = this.getHttpOptions();
-    return this.http.get<Company[]>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions);
+    return this.http.get<Company[]>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions).pipe(
+      catchError(this.handleError([]))
+    );
   }
 
   public getAllCompaniesByZoning(zoningId: number, pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company[]>{
     const httpOptions = this.getHttpOptions();
-    return this.http.get<Company[]>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}&zoningId=${zoningId}`, httpOptions);
+    return this.http.get<Company[]>(`${this.url}/Company?pageIndex=${pageIndex}&pageSize=${pageSize}&zoningId=${zoningId}`, httpOptions).pipe(
+      catchError(this.handleError([]))
+    );
   }
 
   public getAllZonings(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Zoning[]>{
     const httpOptions = this.getHttpOptions();
-    return this.http.get<Zoning[]>(`${this.url}/Zoning?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions);
+    return this.http.get<Zoning[]>(`${this.url}/Zoning?pageIndex=${pageIndex}&pageSize=${pageSize}`, httpOptions).pipe(
+      catchError(this.handleError([]))
+    );
   }
 
   // Error handling
   private handleError<T> (result? : T) {
     return (response: any): Observable<T> => {
-      //console.log(response);
+      console.log(response);
       if (response instanceof HttpErrorResponse) {
         if (response.status == 404 || response.status == 400) {
           this.log("The login or password is wrong.")
         } else {
-          this.log("An unknown error occurred.");
+          this.log(`An unknown error occurred (${response.status}).`);
         }
       }
       return of(result as T);

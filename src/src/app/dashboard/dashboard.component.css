@@ -2,10 +2,9 @@
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-  }
+}
 
-
-  .tab button {
+.tab button {
     background-color: inherit;
     float: left;
     border: none;
@@ -13,57 +12,57 @@
     cursor: pointer;
     padding: 14px 16px;
     transition: 0.3s;
-  }
+}
 
-
-  .tab button:hover {
+.tab button:hover {
     background-color: #ddd;
-  }
+}
 
-
-  .tab button.active {
+.tab button.active {
     background-color: #ccc;
-  }
+}
 
-
-  .tabcontent {
+.tabcontent {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
-  }
-  
-  #actualInfo{
-      float : left;
-      margin : 10px;
-  }
-  
-  #logOffButton{
-      margin : 10px;
-      float : right;
-  }
-  #toDoBlock{
-      height : 100px;
-      resize : none;
-      width : 100%;
-      border : none;
-  }
-  #links{
-      align : center;
-      margin : 20px;
-  }
-  #logo{
-      display : block;
-      margin-left : auto;
-      margin-right : auto;
-      margin-top : 20px;
-      align : center;
-  }
-  #currentDate{
-      display:block;
-      float:right;
-      margin-right : 100px;
-  }
+}
 
 .site-footer{
     height: 50px;
+}
+
+#currentUser{
+    float:right;
+    margin:10px;
+}
+
+#currentDate{
+    float : left;
+    margin : 10px;
+}
+
+#logOffButton{
+    margin : 10px;
+    float : right;
+}
+
+#toDoBlock{
+    height : 100px;
+    resize : none;
+    width : 100%;
+    border : none;
+}
+
+#links{
+    align : center;
+    margin : 20px;
+}
+
+#logo{
+    display : block;
+    margin-left : auto;
+    margin-right : auto;
+    margin-top : 20px;
+    align : center;
 }

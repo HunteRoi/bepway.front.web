@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild, Output, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { TabsService } from '../services/tab.service';
-import { Company } from '../model/Company';
+import { Company } from '../model/interfaces/Company';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../services/data-table-datasource';
 import { Router } from '@angular/router';
-import { Coordinates } from '../model/Models';
 
 @Component({
   selector: 'app-company-management',

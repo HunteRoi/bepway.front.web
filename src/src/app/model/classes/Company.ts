@@ -1,7 +1,10 @@
+import { Company as ICompany } from '../interfaces/Models';
+
+
 import { ActivitySector } from './ActivitySector';
 import { Coordinates } from './Coordinates';
 
-export class Company {
+export class Company implements ICompany {
     constructor(public id: number, 
         public idOpenData: string, 
         public name: string, 

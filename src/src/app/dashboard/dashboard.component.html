@@ -1,15 +1,17 @@
 <div class="tab" id="tabs">
 	<button class="tablinks" id="homeTab" (click)="swapTab('homeTab')">Home</button>
 	<button class="tablinks" id="userTab" (click)="swapTab('userTab')">User management</button>
-  <button class="tablinks" id="companyTab" (click)="swapTab('companyTab')">Company management</button>
+	<button class="tablinks" id="companyTab" (click)="swapTab('companyTab')">Company management</button>
+	
+	<span id="currentUser" *ngIf="user | async">{{ currentUser.login | titlecase }}</span>
 </div>
+
 <div class="tabcontent">
   <router-outlet></router-outlet>
 </div>
+
 <footer class="site-footer">
-	<span id="actualInfo">
-		Date - user
-	</span>
+	<span id="currentDate">{{ nowDate | date }}</span>
 	<span id="logOffButton">
 		<button type="submit" (click)="onLogoff()">Log off</button>
 	</span>

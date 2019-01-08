@@ -1,4 +1,6 @@
-export class SignupModel {
+import { SignupModel as ISignupModel } from '../interfaces/Models';
+
+export class SignupModel implements ISignupModel {
     constructor(public login: string,
         public password: string,
         public birthdate: Date,
