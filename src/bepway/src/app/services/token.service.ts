@@ -25,11 +25,10 @@ import { Token } from '../models/interfaces/token';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 
-
 @Injectable()
 export class TokenService {
 
-    protected basePath = 'https://localhost';
+    protected basePath = 'https://bepway.azurewebsites.net';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -98,7 +97,6 @@ export class TokenService {
                 observe: observe,
                 reportProgress: reportProgress
             }
-        );
+        )
     }
-
 }

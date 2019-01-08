@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -19,6 +19,9 @@ import { CompanyComponent } from './components/company/company.component';
 import { MessageComponent } from './components/message/message.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { APIS } from './services/api';
+import { BASE_PATH } from './variables';
+import { environment } from 'src/environments/environment';
+import { ErrorInterceptor } from './helpers/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,11 @@ import { APIS } from './services/api';
     MatSortModule,
     MatSelectModule
   ],
-  providers: [ APIS ],
+  providers: [ 
+    APIS, 
+    { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

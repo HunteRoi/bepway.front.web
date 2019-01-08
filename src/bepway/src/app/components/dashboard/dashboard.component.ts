@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataAccess } from '../../modules/data-access';
+import { DataAccess } from '../data-access';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +15,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!DataAccess.isAuthenticated()) this.router.navigateByUrl("/login");
   }
 
   swapTab(tab : String){
@@ -23,11 +22,11 @@ export class DashboardComponent implements OnInit {
       case 'homeTab' : 
         this.router.navigateByUrl("/home");
         break;
-      case 'userTab' : 
-        this.router.navigateByUrl("/user-management");
+      case 'usersTab' : 
+        this.router.navigateByUrl("/users");
         break;
-      case 'companyTab' : 
-        this.router.navigateByUrl("/company-management");
+      case 'companiesTab' : 
+        this.router.navigateByUrl("/companies");
         break;
     }
   }

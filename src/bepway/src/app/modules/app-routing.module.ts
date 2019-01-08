@@ -8,10 +8,11 @@ import { UserComponent } from '../components/user/user.component';
 import { CompaniesComponent } from '../components/companies/companies.component';
 import { CompanyComponent } from '../components/company/company.component';
 import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: DashboardComponent,
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo:'/login', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },

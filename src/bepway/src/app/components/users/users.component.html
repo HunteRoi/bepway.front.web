@@ -1,3 +1,20 @@
-<p>
-  users works!
-</p>
+<div id="listButtons">
+  <span>
+    <button id='updateUser'>Update user</button>
+  </span>
+  <span>
+      <button id='deleteUser'>Delete user</button>
+    </span>
+</div>
+
+<table class="full-width-table">
+<th> Login </th>
+<th> Email </th>
+<th> Roles </th>
+<tr *ngFor="let user of users | paginate: {itemsPerPage: pageSize, currentPage: pageIndex, totalItems: total }" (click)="selectUser(user)" (updateDisabledChange)="selectUser(user)" [ngClass]="{'highlight' : selectedRowLogin == user.login}">
+  <td>{{user.login}}</td>
+  <td>{{user.email}}</td>
+  <td>{{user.roles}}</td>
+</tr>
+</table>
+<pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
