@@ -1,4 +1,16 @@
-<div id="selectZoning">
+<table>
+    <th> Name </th>
+    <th> Address </th>
+    <th> Activity sector </th>
+    <tr *ngFor="let company of companies | paginate: {itemsPerPage: pageSize, currentPage: pageIndexTable, totalItems: total }">
+      <td>{{company.name}}</td>
+      <td>{{company.address}}</td>
+      <td>{{company.activitySector.name}}</td>
+    </tr>
+  </table>
+  <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+
+<!-- <div id="selectZoning">
   Zoning : 
   <mat-form-field>
     <mat-select [(value)]="selectedZoning">
@@ -40,4 +52,4 @@
       [pageSizeOptions]="[5,15,30]">
   </mat-paginator>
   
-</div>
+</div> -->

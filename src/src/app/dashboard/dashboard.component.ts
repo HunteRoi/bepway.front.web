@@ -37,6 +37,10 @@ export class DashboardComponent implements OnInit {
     } else this.router.navigateByUrl('/login');
   }
 
+  async getUser(){
+    
+  }
+
   swapTab(tab : String){
     switch(tab){
       case 'homeTab' : 

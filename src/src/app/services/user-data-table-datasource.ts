@@ -53,7 +53,7 @@ export class UserDataTable extends DataSource<User> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<User[]> {
+    connect(): Observable<User[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
@@ -40,6 +40,24 @@ export class BepwayService {
     );
   }
 
+  public getCompanyResponse(): Observable<HttpResponse<Company>> {
+    return this.http.get<Company>(`${this.url}/company`, { observe: 'response' });
+  }
+
+  // showConfigResponse() {
+  //   this.getCompanyResponse()
+  //     // resp is of type `HttpResponse<Config>`
+  //     .subscribe(resp => {
+  //       // display its headers
+  //       const keys = resp.headers.keys();
+  //       this.headers = keys.map(key =>
+  //         `${key}: ${resp.headers.get(key)}`);
+  
+  //       // access the body directly, which is typed as `Config`.
+  //       this.config = { ... resp.body };
+  //     });
+  // }
+
   public getUser(id: number): Observable<User> {
     const httpOptions = this.getHttpOptions();
     return this.http.get<User>(`${this.url}/user/${id}`, httpOptions).pipe(
@@ -60,6 +78,7 @@ export class BepwayService {
       catchError(this.handleError([]))
     );
   }
+
 
   public getAllCompanies(pageIndex = this.PAGEINDEX_DEFAULT, pageSize = this.PAGESIZE_DEFAULT): Observable<Company[]>{
     const httpOptions = this.getHttpOptions();

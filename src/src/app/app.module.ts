@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatTableModule,
     BrowserAnimationsModule,
+    NgxPaginationModule,
     RouterModule.forRoot(
       appRoutes,
       //{ enableTracing: true } // debug only

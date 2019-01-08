@@ -3,7 +3,7 @@
 	<button class="tablinks" id="userTab" (click)="swapTab('userTab')">User management</button>
 	<button class="tablinks" id="companyTab" (click)="swapTab('companyTab')">Company management</button>
 	
-	<span id="currentUser" *ngIf="user | async">{{ currentUser.login | titlecase }}</span>
+	<!-- <span id="currentUser" >{{ currentUser.login | titlecase }}</span> -->
 </div>
 
 <div class="tabcontent">

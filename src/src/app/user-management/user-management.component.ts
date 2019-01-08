@@ -25,11 +25,15 @@ export class UserManagementComponent implements OnInit {
     this.tabsService = new TabsService("userTab");
    }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.tabsService.setActive();
-    
     this.dataSource = new UserDataTable(this.paginator, this.sort, this.myApi);
+    
     //this.getUsers();
+  }
+
+  async getData(){
+    this.dataSource = new UserDataTable(this.paginator, this.sort, this.myApi);
   }
 
   selectCompany(row){
