@@ -3,6 +3,8 @@ import { Company, Coordinates, Zoning } from '../model/classes/Models';
 import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from '../services/data-table-datasource';
 import { BepwayService } from '../services/bepway.service';
+import { CompanyManagementComponent } from '../company-management/company-management.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-management-add-list-companies',
@@ -22,50 +24,75 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
   // @Input() updateDisabled:boolean;
   // companiesArray : Array<Company>;
   // columnsToDisplay = ['name', 'address', 'sector'];
-  // selectedRowName = "";
-  // selectedCompany : Company;
+ 
 
   readonly DEFAULT_PAGE_SIZE = 15;
+  readonly NO_ZONING_SPECIFIED = -1;
   pageSize:number;
   pageIndex:number;
   pageIndexTable:number;
   total:number;
   companies:Company[];
+  zonings:Zoning[];
+  selectedZoningId:number;
+  selectedRowName = "";
+  selectedCompany : Company;
+  deleteButton:any;
 
   constructor(private myApi: BepwayService) {
   }
 
   async ngOnInit() {
+    this.deleteButton = document.getElementById("deleteCompany");
     this.swapButton("listCompanies");
+    this.selectedZoningId = this.NO_ZONING_SPECIFIED;
     this.total = 0;
     this.pageIndex = 0;
     this.pageIndexTable = 1;
     this.pageSize = this.DEFAULT_PAGE_SIZE;
     await this.getTotal();
     await this.getCompanies();
-    console.log(this.companies);
-    // this.getZonings();
-    // this.dataSource = new DataTableDataSource(this.paginator, this.sort, this.myApi, null);
-    //this.getAllCompanies();
-    //this.dataSource.addCompanies(this.companiesArray);
+    await this.getZonings();
   }
 
   async getCompanies(){
     this.companies = new Array();
-    this.myApi.getAllCompanies(this.pageIndex, this.pageSize)
+    if(this.selectedZoningId == this.NO_ZONING_SPECIFIED){
+      this.myApi.getAllCompanies(this.pageIndex, this.pageSize)
       .subscribe(res=>{
         for(let company of res){
           this.companies.push(company);
         }
       });
-      console.log(this.pageIndex);
+    }
+    else{
+      this.myApi.getAllCompaniesByZoning(this.selectedZoningId,this.pageIndex, this.pageSize)
+      .subscribe(res=>{
+        for(let company of res){
+          this.companies.push(company);
+        }
+      });
+    }
   }
 
   async getTotal(){
-    this.myApi.getAllCompanies(this.pageIndex, 10000)
-    .subscribe(res=>{
-      this.total = res.length;
-    });
+    if(this.selectedZoningId == this.NO_ZONING_SPECIFIED){
+      this.myApi.getAllCompanies(this.pageIndex, 10000)
+      .subscribe(res=>{
+        this.total = res.length;
+      });
+    }
+    else{
+      this.myApi.getAllCompaniesByZoning(this.selectedZoningId,this.pageIndex, 10000)
+      .subscribe(res=>{
+        this.total = res.length;
+      });
+    }
+  }
+
+  getCompaniesAndGetTotal(){
+    this.getTotal();
+    this.getCompanies();
   }
 
   async pageChanged(event){
@@ -74,30 +101,15 @@ export class CompanyManagementAddListCompaniesComponent implements OnInit {
     await this.getCompanies();
   }
 
-  // getZonings(){
-  //   this.myApi.getAllZonings()
-  //     .subscribe(zonings => this.zonings = zonings);
-  //   //console.log(this.zonings);
-  // }
+  async getZonings(){
+    this.myApi.getAllZonings()
+      .subscribe(zonings => this.zonings = zonings);
+  }
 
-  // getAllCompanies(){
-  //   this.myApi.getAllCompanies(0, 15)
-  //   .subscribe(result => console.log(result));
-  // }
-
-  // getCompaniesByZoning(){
-  //   this.selectedZoning = Number(this.selectedZoning);
-  //   this.myApi.getAllCompaniesByZoning(this.selectedZoning)
-  //   .subscribe(companies => this.companiesToDisplay = companies);
-  //   console.log(this.companiesToDisplay);
-  // }
-
-  // selectCompany(row){
-  //   this.selectedRowName = row.name;
-  //   this.selectedCompany = row;
-  //   this.updateDisabled = true;
-  // }
-
+  selectCompany(row){
+    this.selectedRowName = row.name;
+    this.selectedCompany = row;
+  }
 
   swapButton(button){
     this.removeOldActive();

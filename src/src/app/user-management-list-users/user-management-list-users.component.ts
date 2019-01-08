@@ -14,6 +14,8 @@ export class UserManagementListUsersComponent implements OnInit {
   pageIndexTable:number;
   total:number;
   users:User[];
+  selectedRowLogin = "";
+  selectedUser:User;
 
   constructor(private myApi:BepwayService) { }
 
@@ -49,4 +51,8 @@ export class UserManagementListUsersComponent implements OnInit {
     await this.getUsers();
   }
 
+  selectUser(user){
+    this.selectUser = user;
+    this.selectedRowLogin = user.login;
+  }
 }

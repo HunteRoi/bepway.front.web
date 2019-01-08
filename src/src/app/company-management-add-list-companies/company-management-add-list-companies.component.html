@@ -1,11 +1,23 @@
-<table>
+<div id="selectZoning">
+    Zoning : 
+    <mat-form-field>
+      <mat-select [(value)]="selectedZoningId">
+        <mat-option value="-1" (click)="getCompaniesAndGetTotal()">Aucun zoning</mat-option>
+        <mat-option *ngFor="let zoning of zonings" [value]="zoning.id" (click)="getCompaniesAndGetTotal()">
+          {{zoning.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+<table class="full-width-table">
     <th> Name </th>
     <th> Address </th>
     <th> Activity sector </th>
-    <tr *ngFor="let company of companies | paginate: {itemsPerPage: pageSize, currentPage: pageIndexTable, totalItems: total }">
+    <tr *ngFor="let company of companies | paginate: {itemsPerPage: pageSize, currentPage: pageIndexTable, totalItems: total }" (click)="selectCompany(company)" (updateDisabledChange)="selectCompany(company)" [ngClass]="{'highlight' : selectedRowName == company.name}">
       <td>{{company.name}}</td>
       <td>{{company.address}}</td>
-      <td>{{company.activitySector.name}}</td>
+      <td>{{company.activitySector == null ? "Secteur non spécifie" : company.activitySector.name }}</td>
     </tr>
   </table>
   <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>

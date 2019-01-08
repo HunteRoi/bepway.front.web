@@ -4,8 +4,12 @@
   </span>
   <span>
     <!--*ngIf="(updateDisabled)"-->
-    <button id='updateCompany'(click)="swapButton('updateCompany')">Update company</button>
+    <button id='updateCompany'>Update company</button>
   </span>
+  <span>
+      <!--*ngIf="(updateDisabled)"-->
+      <button id='deleteCompany' (click)="caca()">Delete company</button>
+    </span>
 </div>
 
 <router-outlet ></router-outlet>
