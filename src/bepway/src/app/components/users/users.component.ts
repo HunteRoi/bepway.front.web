@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
+import { TabsService } from '../../services/tabs.service';
 import { User, Token } from '../../models/classes/Models';
 import { UserService } from '../../services/api';
 import { DataAccess } from '../data-access';
 import { MessageService } from 'src/app/services/message.service';
+import { NotifierService } from 'angular-notifier';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -13,6 +15,7 @@ import { MessageService } from 'src/app/services/message.service';
 export class UsersComponent implements OnInit {
   readonly DEFAULT_PAGE_SIZE = 15;
   readonly ADMIN_ROLE = "Admin";
+  public tabsService : TabsService;
   public pageSize:number;
   public pageIndex:number;
   public pageIndexTable:number;
@@ -20,8 +23,12 @@ export class UsersComponent implements OnInit {
   public users:User[];
   public selectedRowLogin:String;
   public selectedUser:User;
+  private readonly notifier: NotifierService;
 
-  constructor(private messageService: MessageService, private userDataAccess: UserService) {
+  constructor(private router: Router, private messageService: MessageService, private userDataAccess: UserService, notifier: NotifierService) {
+    this.notifier = notifier;
+
+    this.tabsService = new TabsService("userTab");
     this.resetUsers();
     this.userDataAccess.configuration.apiKeys = {
       "Authorization": `Bearer ${DataAccess.deserializeStorage<Token>(DataAccess.TOKEN_KEY)['access_token']}`
@@ -32,17 +39,14 @@ export class UsersComponent implements OnInit {
     this.pageIndex = 0;
     this.pageIndexTable = 1;
     this.pageSize = this.DEFAULT_PAGE_SIZE;
+    this.tabsService.setActive();
     await this.setTotal();
     await this.setUsers();
   }
 
   async setUsers(){
     this.userDataAccess.get(this.pageIndex, this.pageSize)
-      .subscribe(res=>{
-        for(let user of res){
-          this.users.push(user);
-        }
-    });
+      .subscribe(res=> this.users = res);
   }
 
   async setTotal() {
@@ -68,12 +72,28 @@ export class UsersComponent implements OnInit {
     this.selectedRowLogin = user.login;
   }
 
+  updateUser(){
+    this.router.navigateByUrl(`/user/${this.selectedUser.id}`);
+  }
+
   deleteUser() {
     this.userDataAccess._delete(this.selectedUser.id).subscribe(
       next => this.log(`The user ${this.selectedUser.login} has been removed.`, 'alert alert-success'),
       error => this.log(`The user ${this.selectedUser.login} couldn't be removed : ${error}`, 'alert alert-error')
     );
-    //window.location.reload();
+
+    this.notifier.show({
+      type: 'success', 
+      message: 'The page is going to reload!', 
+      id: 'reload-notif'
+    });
+    
+    setTimeout(this.hideNotificationsAndReload, 3000);
+  }
+
+  private hideNotificationsAndReload() {
+    this.notifier.hide('reload-notif');
+    window.location.reload();
   }
 
   private log(message: string, classes?: string) {

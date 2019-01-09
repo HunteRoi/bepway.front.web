@@ -26,11 +26,12 @@ export class HomeComponent implements OnInit {
    }
 
   async ngOnInit() {
+    this.tabsService.setActive();
     await this.gettingLogInfo();
   }
 
   async gettingLogInfo(){
-    if (DataAccess.exists(DataAccess.TOKEN_KEY) && DataAccess.exists(DataAccess.USER_KEY)) {
+    if (DataAccess.isAuthenticated()) {
       this.user = this.userDataAccess.getByLogin(DataAccess.deserializeStorage<string>(DataAccess.USER_KEY));
       this.user.subscribe(
         (result: User) => {
@@ -39,10 +40,7 @@ export class HomeComponent implements OnInit {
             this.tabsService.setActive();
           }
         },
-        error => {
-          console.log(error)
-          this.router.navigateByUrl("login");
-        });
+        error => this.router.navigateByUrl("/login"));
     } else this.router.navigateByUrl('/login');
   }
 

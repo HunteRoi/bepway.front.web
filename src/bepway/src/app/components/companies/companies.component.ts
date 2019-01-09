@@ -3,6 +3,7 @@ import { Company, Zoning, Token } from '../../models/classes/Models';
 import { CompanyService, ZoningService } from '../../services/api';
 import { MessageService } from '../../services/message.service';
 import { DataAccess } from '../data-access';
+import { TabsService } from '../../services/tabs.service';
 import { resolve } from 'url';
 import { getToken } from '@angular/router/src/utils/preactivation';
 
@@ -17,6 +18,7 @@ export class CompaniesComponent implements OnInit {
   readonly NO_ZONING_SPECIFIED = -1;
   readonly ADMIN_ROLE = "Admin";
   readonly GESTIONNARY_ROLE = "Gestionnary"
+  tabsService : TabsService;
   pageSize:number;
   pageIndex:number;
   pageIndexTable:number;
@@ -30,6 +32,7 @@ export class CompaniesComponent implements OnInit {
   deleteButton:any;
 
   constructor(private companyDataAccess: CompanyService, private zoningDataAccess: ZoningService, private messageService: MessageService) {
+    this.tabsService = new TabsService("companyTab");
     companyDataAccess.configuration.apiKeys = {
       "Authorization": `Bearer ${DataAccess.deserializeStorage<Token>(DataAccess.TOKEN_KEY)['access_token']}`
     };
@@ -43,58 +46,44 @@ export class CompaniesComponent implements OnInit {
     this.pageIndex = 0;
     this.pageIndexTable = 1;
     this.pageSize = this.DEFAULT_PAGE_SIZE;
-    this.totalZoning = await this.getTotalZonings();
-    this.zonings = await this.getZonings();
-    this.totalCompanies = await this.getTotalCompanies();
-    this.companies = await this.getCompanies();
+    this.tabsService.setActive();
+    await this.setTotalZonings();
+    await this.setZonings();
+    await this.setTotalCompanies();
+    await this.setCompanies();
   }
 
-  async getCompanies(): Promise<Company[]> {
-    let companies = new Array<Company>();
+  async setCompanies() {
+    this.companies = new Array<Company>();
     this.companyDataAccess.get(this.pageIndex, this.pageSize, ((this.selectedZoningId == this.NO_ZONING_SPECIFIED) ? undefined : this.selectedZoningId))
-      .subscribe(res => {
-        for(let company of res) {
-          companies.push(company);
-        }
-      });
-    return companies;
+      .subscribe(res => this.companies = res);
   }
 
-  async getTotalCompanies(): Promise<number>{
-    let total = 0;
+  async setTotalCompanies(){
     this.companyDataAccess.get(this.pageIndex, 0, ((this.selectedZoningId == this.NO_ZONING_SPECIFIED) ? undefined : this.selectedZoningId), undefined, undefined, undefined, 'response')
-      .subscribe(res => total = Number.parseInt(res.headers.get("X-TotalCount")));
-    return total;
+      .subscribe(res => this.totalCompanies = Number.parseInt(res.headers.get("X-TotalCount")));
   }
 
-  async getTotalZonings(): Promise<number>{
-    let total = 0;
+  async setTotalZonings(){
     this.zoningDataAccess.get(this.pageIndex, 0, undefined, 'response')
-      .subscribe(res => total = Number.parseInt(res.headers.get("X-TotalCount")));
-    console.log(total);
-    return total;
+      .subscribe(res => this.totalZoning = Number.parseInt(res.headers.get("X-TotalCount")));
   }
 
   async getCompaniesAndGetTotal(){
-    this.totalCompanies = await this.getTotalCompanies();
-    await this.getCompanies();
+    await this.setTotalCompanies();
+    await this.setCompanies();
   }
 
   async pageChanged(event){
     this.pageIndexTable = event ;
     this.pageIndex = event - 1;
-    await this.getCompanies();
+    await this.setCompanies();
   }
 
-  async getZonings(): Promise<Zoning[]> {
-    let zonings = new Array<Zoning>();
+  async setZonings() {
+    this.zonings = new Array<Zoning>();
     this.zoningDataAccess.get(0, this.totalZoning)
-      .subscribe(res => {
-        for(let zoning of res) {
-          zonings.push(zoning);
-        }
-      });
-    return zonings;
+      .subscribe(res => this.zonings = res);
   }
 
   selectCompany(row){
@@ -103,10 +92,9 @@ export class CompaniesComponent implements OnInit {
   }
 
   deleteCompany(){
-    if(this.selectedCompany == null){
-        document.getElementById("errorMessage").innerHTML = "Veuillez sélectionner une entreprise";
-    }
-    else{
+    if(this.selectedCompany == null) {
+        // WE HAVE A FUCKING APP-MESSAGE COMPONENT
+    } else {
       
     }
   }

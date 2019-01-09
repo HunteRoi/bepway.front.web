@@ -1,6 +1,6 @@
 <div id="listButtons">
   <span>
-    <button id='updateUser' [disabled]="selectedUser == null">Update user</button>
+    <button id='updateUser' [disabled]="selectedUser == null" (click)="updateUser()">Update user</button>
   </span>
   <span>
       <button id='deleteUser' [disabled]="selectedUser == null" (click)="deleteUser()">Delete user</button>
