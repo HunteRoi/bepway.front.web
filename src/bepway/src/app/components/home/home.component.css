@@ -1,0 +1,30 @@
+#toDoBlock{
+    height : 100px;
+    resize : none;
+    width : 100%;
+
+}
+#links{
+    float : center;
+    margin : 20px;
+}
+#logo{
+    display : block;
+    margin-left : auto;
+    margin-right : auto;
+    margin-top : 20px;
+    float : center;
+}
+#currentDate{
+    display:block;
+    float:right;
+    margin-right : 100px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+#majTodo{
+    float : right;
+}

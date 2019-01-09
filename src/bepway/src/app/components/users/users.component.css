@@ -2,11 +2,11 @@
     width: 100%;
 }
 
-.highlight{
+.highlight {
     background-color: #ccc;
 }
 
-#listButtons{
+#listButtons {
     margin : 0 auto;
     display: flex;
     align-items: center;

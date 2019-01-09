@@ -28,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class CompanyService {
 
-    protected basePath = 'https://localhost';
+    protected basePath = 'https://bepway.azurewebsites.net';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

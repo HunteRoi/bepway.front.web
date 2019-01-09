@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { User, Token } from '../../models/classes/Models';
 import { UserService } from '../../services/api';
 import { DataAccess } from '../data-access';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-users',
@@ -20,7 +21,8 @@ export class UsersComponent implements OnInit {
   public selectedRowLogin:String;
   public selectedUser:User;
 
-  constructor(private userDataAccess: UserService) {
+  constructor(private messageService: MessageService, private userDataAccess: UserService) {
+    this.resetUsers();
     this.userDataAccess.configuration.apiKeys = {
       "Authorization": `Bearer ${DataAccess.deserializeStorage<Token>(DataAccess.TOKEN_KEY)['access_token']}`
     };
@@ -30,41 +32,52 @@ export class UsersComponent implements OnInit {
     this.pageIndex = 0;
     this.pageIndexTable = 1;
     this.pageSize = this.DEFAULT_PAGE_SIZE;
-    this.total = await this.getTotal();
-    this.users = await this.getUsers();
+    await this.setTotal();
+    await this.setUsers();
   }
 
-  async getUsers(){
-    let users = new Array();
+  async setUsers(){
     this.userDataAccess.get(this.pageIndex, this.pageSize)
       .subscribe(res=>{
         for(let user of res){
-          users.push(user);
+          this.users.push(user);
         }
     });
-    return users;
   }
 
-  async getTotal(){
-    this.userDataAccess.get(this.pageIndex, 1000)
-      .subscribe(res=>{
-        return res.length;
+  async setTotal() {
+    this.userDataAccess.get(this.pageIndex, 0, undefined, 'response')
+      .subscribe(res => {
+        this.total = Number.parseInt(res.headers.get("X-TotalCount"))
       });
   }
 
-  async pageChanged(event){
-    this.pageIndexTable = event;
-    this.pageIndex = event - 1;
-    await this.getUsers();
+  async pageChanged(index: number) {
+    this.resetUsers();
+    this.pageIndexTable = index;
+    this.pageIndex = index - 1;
+    await this.setUsers();
   }
 
-  selectUser(user){
+  private resetUsers() {
+    this.users = new Array<User>();
+  }
+
+  selectUser(user: User) {
     this.selectedUser = user;
     this.selectedRowLogin = user.login;
   }
 
-  deleteUser(){
-    
+  deleteUser() {
+    this.userDataAccess._delete(this.selectedUser.id).subscribe(
+      next => this.log(`The user ${this.selectedUser.login} has been removed.`, 'alert alert-success'),
+      error => this.log(`The user ${this.selectedUser.login} couldn't be removed : ${error}`, 'alert alert-error')
+    );
+    //window.location.reload();
+  }
+
+  private log(message: string, classes?: string) {
+    this.messageService.add(message, classes);
   }
 
 }

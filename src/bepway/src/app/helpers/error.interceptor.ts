@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { DataAccess } from '../components/data-access';
@@ -21,12 +21,15 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.log(`An unknown error occurred (${err.status}).`);     // unknown error
             }
             
+            // AJOUTER GESTION PAR CONTROLLER
+            
             const error = err.error.message || err.statusText;
-            return throwError(error);
+            //return throwError(error);
+            return of(error);
         }))
     }
 
     private log (message: string) {
-        this.messageService.add(message, "error");
+        this.messageService.add(message, "alert alert-error");
     }
 }

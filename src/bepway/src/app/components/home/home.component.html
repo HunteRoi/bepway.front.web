@@ -1,3 +1,16 @@
-<p>
-  home works!
-</p>
+<p>Welcome <span class="bold" *ngIf="user | async">{{ currentUser['login'] | titlecase }}</span> !</p>
+<p>This is the dashboard for our back-office !</p>
+<div>
+	<p>Select a tab or one of the following link to navigate :
+		<span id="links">
+			<a href="/users">Users management</a> | <a href="companies">Companies management</a>
+		</span>
+	</p>
+</div>
+<fieldset>
+	<legend>To do</legend>
+  <textarea id="toDoBlock" placeholder="Things to do" *ngIf="user | async">{{ currentUser['todoList'] }}</textarea>
+	<button id="majTodo" type="submit" (click)="majToDo(toDo)">Mettre à jour</button>
+	<app-message></app-message>
+</fieldset>
+<img src="../../../assets/images/app_logo.svg" id="logo" height="120" width="240">

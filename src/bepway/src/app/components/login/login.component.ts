@@ -19,7 +19,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private fb: FormBuilder, private tokenDataAccess: TokenService) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    if (DataAccess.isAuthenticated()) this.router.navigateByUrl("/home");
+  }
 
   onLoginSubmit() {
     if (this.loginForm.valid) {
