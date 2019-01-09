@@ -26,14 +26,16 @@ export class LoginComponent implements OnInit {
   onLoginSubmit() {
     if (this.loginForm.valid) {
       let loginUser: LoginModel = this.loginForm.value;
+
       this.tokenDataAccess.login(loginUser).subscribe(
         (result: Token) => {
           if (result && result['access_token']) {
-            DataAccess.serializeStorage<Token>(DataAccess.TOKEN_KEY,result);
+            DataAccess.serializeStorage<Token>(DataAccess.TOKEN_KEY, result);
             DataAccess.serializeStorage<string>(DataAccess.USER_KEY, loginUser.login);
             this.router.navigateByUrl("/home");
           }
-        }
+        },
+        error => console.log(error)
       );
     }
   }

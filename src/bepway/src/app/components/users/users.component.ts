@@ -27,7 +27,6 @@ export class UsersComponent implements OnInit {
 
   constructor(private router: Router, private messageService: MessageService, private userDataAccess: UserService, notifier: NotifierService) {
     this.notifier = notifier;
-
     this.tabsService = new TabsService("userTab");
     this.resetUsers();
     this.userDataAccess.configuration.apiKeys = {
@@ -72,27 +71,26 @@ export class UsersComponent implements OnInit {
     this.selectedRowLogin = user.login;
   }
 
+  addUser() {
+    this.router.navigateByUrl("/user");
+  }
+
   updateUser(){
     this.router.navigateByUrl(`/user/${this.selectedUser.id}`);
   }
 
   deleteUser() {
     this.userDataAccess._delete(this.selectedUser.id).subscribe(
-      next => this.log(`The user ${this.selectedUser.login} has been removed.`, 'alert alert-success'),
-      error => this.log(`The user ${this.selectedUser.login} couldn't be removed : ${error}`, 'alert alert-error')
+      _ => this.log(`The user ${this.selectedUser.login} has been removed.`, 'alert alert-success'),
+      error => this.log(`The user ${this.selectedUser.login} couldn't be removed : ${error}`, 'alert alert-danger')
     );
 
-    this.notifier.show({
-      type: 'success', 
-      message: 'The page is going to reload!', 
-      id: 'reload-notif'
-    });
+    this.notifier.notify('info', 'The page is going to reload!');
     
     setTimeout(this.hideNotificationsAndReload, 3000);
   }
 
   private hideNotificationsAndReload() {
-    this.notifier.hide('reload-notif');
     window.location.reload();
   }
 

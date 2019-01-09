@@ -15,10 +15,11 @@ import { Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   tabsService : TabsService;
-  user:Observable<User>;
-  currentUser:User;
+  user: Observable<User>;
+  currentUser: User;
 
   constructor(private router: Router, private userDataAccess: UserService, private messageService: MessageService) {
+    this.messageService.clear();
     this.tabsService = new TabsService("homeTab");
     this.userDataAccess.configuration.apiKeys = {
       "Authorization": `Bearer ${DataAccess.deserializeStorage<Token>(DataAccess.TOKEN_KEY)['access_token']}`
@@ -27,10 +28,10 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     this.tabsService.setActive();
-    await this.gettingLogInfo();
+    this.gettingLogInfo();
   }
 
-  async gettingLogInfo(){
+  gettingLogInfo(){
     if (DataAccess.isAuthenticated()) {
       this.user = this.userDataAccess.getByLogin(DataAccess.deserializeStorage<string>(DataAccess.USER_KEY));
       this.user.subscribe(
@@ -40,18 +41,18 @@ export class HomeComponent implements OnInit {
             this.tabsService.setActive();
           }
         },
-        error => this.router.navigateByUrl("/login"));
+        _ => this.router.navigateByUrl("/login"));
     } else this.router.navigateByUrl('/login');
   }
 
 
   majToDo(){
     if(this.currentUser != null){
-      
+      // A adapter en typescript avec Angular, abandonner la forme "javascript" traditionnelle
       console.log(document.getElementById("toDoBlock").innerHTML);
       this.userDataAccess.put(this.currentUser.id, this.currentUser).subscribe(
-        next => this.log(`The to do list has been updated.`, 'alert alert-success'),
-        error => this.log(`The update failed`, 'alert alert-error')
+        _ => this.log(`The to do list has been updated.`, 'alert alert-success'),
+        _ => this.log(`The update failed`, 'alert alert-error')
       );
       //window.location.reload();
     }
