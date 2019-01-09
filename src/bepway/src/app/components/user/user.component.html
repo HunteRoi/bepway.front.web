@@ -5,11 +5,11 @@
          [(ngModel)]="user.login" >
 </div>
 
-<div class="form-group" >
+<!-- <div class="form-group" >
   <label for="password">Password</label>
   <input type="password"  class="form-control" id="password"
          [(ngModel)]="user.password" name="password" [disabled]="user != null">
-</div>
+</div> -->
 
 <div class="form-group">
   <label for="email">Email</label>
@@ -28,10 +28,11 @@
 
 <div class="form-group">
   <label for="power">Role</label>
-  <select class="form-control" id="roles" >
+  <select class="form-control" id="roles" ng-init="user.roles" >
     <option [value]="Admin">Administrator</option>
     <option [value]="Gestionnary">Gestionnary</option>
     <option [value]="User">User</option>
     <option [value]="Guest">Guest</option>
   </select>
 </div>
+<button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Mettre à jour</button>
